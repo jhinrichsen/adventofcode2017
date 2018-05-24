@@ -1,6 +1,12 @@
 package adventofcode2017
 
-import "testing"
+import (
+	"io/ioutil"
+	"log"
+	"strconv"
+	"strings"
+	"testing"
+)
 
 func TestDay6Sample(t *testing.T) {
 	banks := Banks{0, 2, 7, 0}
@@ -9,6 +15,27 @@ func TestDay6Sample(t *testing.T) {
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
+}
+
+func TestDay6Input(t *testing.T) {
+	const nBanks = 16
+	buf, err := ioutil.ReadFile("testdata/day6.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+	fs := strings.Fields(string(buf))
+	if len(fs) != nBanks {
+		t.Fatalf("want %d fields but got %d\n", nBanks, len(fs))
+	}
+	var banks Banks
+	for i := 0; i < nBanks; i++ {
+		banks[i], err = strconv.Atoi(fs[i])
+		if err != nil {
+			t.Fatalf("error converting col %d: %v\n", i, err)
+		}
+	}
+	n := Day6Impl1(banks, nBanks)
+	log.Printf("day6: iterations=%d\n", n)
 }
 
 func TestArrayAsKeyInMap(t *testing.T) {
@@ -28,5 +55,11 @@ func TestArrayAsKeyInMap(t *testing.T) {
 func BenchmarkDay6Impl1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = Day6Impl1(Banks{0, 2, 7, 0}, 4)
+	}
+}
+
+func BenchmarkDay6Impl2(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = Day6Impl2([]int{0, 2, 7, 0})
 	}
 }
