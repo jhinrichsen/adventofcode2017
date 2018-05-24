@@ -2,7 +2,6 @@ package adventofcode2017
 
 import (
 	"fmt"
-	"log"
 )
 
 func dump6(banks []int) {
@@ -42,7 +41,7 @@ func Day6(banks []int) int {
 		return (i + 1) % len(banks)
 	}
 	redistributions := 0
-	dump6(banks)
+	// dump6(banks)
 	for {
 		i, n := max()
 		banks[i] = 0
@@ -57,12 +56,11 @@ func Day6(banks []int) int {
 		redistributions++
 
 		cfg := configuration()
-		log.Printf("%d\n", cfg)
 		if seen[cfg] {
 			break
 		}
 		seen[cfg] = true
-		dump6(banks)
+		// dump6(banks)
 	}
 	return redistributions
 }
