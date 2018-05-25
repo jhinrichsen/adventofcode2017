@@ -77,3 +77,9 @@ func TestDay3A174344(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func BenchmarkDay3(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Day3(361527)
+	}
+}
