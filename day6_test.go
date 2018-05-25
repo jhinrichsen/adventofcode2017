@@ -35,7 +35,7 @@ func TestDay6Input(t *testing.T) {
 		}
 	}
 	n := Day6Impl1(banks, nBanks)
-	log.Printf("day6: iterations=%d\n", n)
+	log.Printf("day 6: iterations=%d\n", n)
 }
 
 func TestArrayAsKeyInMap(t *testing.T) {

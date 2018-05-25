@@ -55,7 +55,7 @@ func test(t *testing.T, part func([]int) int) {
 		}
 		maze = append(maze, i)
 	}
-	log.Printf("%v: %d steps until outside\n",
+	log.Printf("%v: got %d\n",
 		runtime.FuncForPC(reflect.ValueOf(part).Pointer()).Name(),
 		part(maze))
 }
