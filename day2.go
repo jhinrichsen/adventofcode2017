@@ -14,6 +14,7 @@ func Day2(spreadsheet [][]int) int {
 			}
 		}
 		sum += max - min
+		// log.Printf("row: min=%d, max=%d, sum=%d\n", min, max, sum)
 	}
 	return sum
 }
