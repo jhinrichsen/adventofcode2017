@@ -34,8 +34,8 @@ func TestDay6Input(t *testing.T) {
 			t.Fatalf("error converting col %d: %v\n", i, err)
 		}
 	}
-	n := Day6Impl1(banks, nBanks)
-	log.Printf("day 6: iterations=%d\n", n)
+	got := Day6Impl1(banks, nBanks)
+	log.Printf("day 6: got %d\n", got)
 }
 
 func TestArrayAsKeyInMap(t *testing.T) {
