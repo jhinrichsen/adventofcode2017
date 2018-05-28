@@ -1,6 +1,6 @@
 package adventofcode2017
 
-func Day9(stream string) int {
+func Day9(stream []byte) int {
 	score := 0
 	level := 0
 	inGarbage := false

@@ -8,18 +8,18 @@ import (
 
 func TestDay9Samples(t *testing.T) {
 	var es = []struct {
-		stream string
+		stream []byte
 		score  int
 	}{
-		{"<>,", 0},
-		{"{},", 1},
-		{"{{{}}},", 6},
-		{"{{},{}},", 5},
-		{"{{{},{},{{}}}},", 16},
-		{"{<a>,<a>,<a>,<a>},", 1},
-		{"{{<ab>},{<ab>},{<ab>},{<ab>}},", 9},
-		{"{{<!!>},{<!!>},{<!!>},{<!!>}},", 9},
-		{"{{<a!>},{<a!>},{<a!>},{<ab>}},", 3},
+		{[]byte("<>,"), 0},
+		{[]byte("{},"), 1},
+		{[]byte("{{{}}},"), 6},
+		{[]byte("{{},{}},"), 5},
+		{[]byte("{{{},{},{{}}}},"), 16},
+		{[]byte("{<a>,<a>,<a>,<a>},"), 1},
+		{[]byte("{{<ab>},{<ab>},{<ab>},{<ab>}},"), 9},
+		{[]byte("{{<!!>},{<!!>},{<!!>},{<!!>}},"), 9},
+		{[]byte("{{<a!>},{<a!>},{<a!>},{<ab>}},"), 3},
 	}
 
 	for i := range es {
@@ -36,7 +36,7 @@ func TestDay9(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	got := Day9(string(buf))
+	got := Day9(buf)
 	log.Printf("day 9: got %d\n", got)
 }
 
@@ -45,9 +45,8 @@ func BenchmarkDay9(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-	s := string(buf)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Day9(s)
+		Day9(buf)
 	}
 }
