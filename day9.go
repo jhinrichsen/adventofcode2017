@@ -1,5 +1,6 @@
 package adventofcode2017
 
+// Day9 is O(n) and allocation free (0 B/op).
 func Day9(stream []byte) int {
 	score := 0
 	level := 0
