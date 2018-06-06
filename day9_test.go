@@ -6,16 +6,16 @@ import (
 	"testing"
 )
 
-func ExampleDay9() {
+func ExampleDay09() {
 	buf, err := ioutil.ReadFile("testdata/day9.txt")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(Day9(buf))
+	fmt.Println(Day09(buf))
 	// Output: 10616
 }
 
-func TestDay9Samples(t *testing.T) {
+func TestDay09Samples(t *testing.T) {
 	var es = []struct {
 		stream []byte
 		score  int
@@ -33,20 +33,20 @@ func TestDay9Samples(t *testing.T) {
 
 	for i := range es {
 		want := es[i].score
-		got := Day9(es[i].stream)
+		got := Day09(es[i].stream)
 		if want != got {
 			t.Fatalf("test set #%d: want %v but got %v\n", i, want, got)
 		}
 	}
 }
 
-func BenchmarkDay9(b *testing.B) {
+func BenchmarkDay09(b *testing.B) {
 	buf, err := ioutil.ReadFile("testdata/day9.txt")
 	if err != nil {
 		b.Fatal(err)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Day9(buf)
+		Day09(buf)
 	}
 }

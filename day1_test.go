@@ -7,13 +7,13 @@ import (
 	"testing"
 )
 
-func ExampleDay1() {
+func ExampleDay01() {
 	in, _ := input()
-	fmt.Println(Day1(in))
+	fmt.Println(Day01(in))
 	// Output: 1029
 }
 
-func TestDay1Sample(t *testing.T) {
+func TestDay01Sample(t *testing.T) {
 	var ts = []struct {
 		want int
 		in   []byte
@@ -24,7 +24,7 @@ func TestDay1Sample(t *testing.T) {
 		{9, []byte{9, 1, 2, 1, 2, 1, 2, 9}},
 	}
 	for _, tt := range ts {
-		got := Day1(tt.in)
+		got := Day01(tt.in)
 		if tt.want != got {
 			t.Fatalf("want %d but got %d\n", tt.want, got)
 		}
@@ -48,13 +48,13 @@ func input() ([]byte, error) {
 	return buf, nil
 }
 
-func BenchmarkDay1(b *testing.B) {
+func BenchmarkDay01(b *testing.B) {
 	in, err := input()
 	if err != nil {
 		b.Fatal(err)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Day1(in)
+		Day01(in)
 	}
 }

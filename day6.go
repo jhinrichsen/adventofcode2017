@@ -20,7 +20,7 @@ func dump6(banks []int) {
 type Banks [16]int
 
 // Day6 returns number of redistributions.
-func Day6Impl1(banks Banks, activeBanks int) int {
+func Day06Impl1(banks Banks, activeBanks int) int {
 	// return index and value of max bank
 	max := func() (int, int) {
 		idx := 0
@@ -62,7 +62,7 @@ func Day6Impl1(banks Banks, activeBanks int) int {
 	return redistributions
 }
 
-func Day6Impl2(banks []int) int {
+func Day06Impl2(banks []int) int {
 	// return index and value of max bank
 	max := func() (int, int) {
 		idx := 0

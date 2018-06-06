@@ -5,7 +5,7 @@ import (
 )
 
 // Day5 returns the number of steps until outside of maze.
-func Day5Part1(maze []int) int {
+func Day05Part1(maze []int) int {
 	index := 0
 	prev := index
 
@@ -42,7 +42,7 @@ func dump(maze []int, index int) {
 }
 
 // Day5 returns the number of steps until outside of maze.
-func Day5Part2(maze []int) int {
+func Day05Part2(maze []int) int {
 	index := 0
 	prev := index
 

@@ -8,31 +8,31 @@ import (
 	"testing"
 )
 
-func TestDay5Part1(t *testing.T) {
+func TestDay05Part1(t *testing.T) {
 	maze := []int{0, 3, 0, 1, -3}
 	want := 5
-	got := Day5Part1(maze)
+	got := Day05Part1(maze)
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
 }
 
-func TestDay5Part2(t *testing.T) {
+func TestDay05Part2(t *testing.T) {
 	maze := []int{0, 3, 0, 1, -3}
 	want := 10
-	got := Day5Part2(maze)
+	got := Day05Part2(maze)
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
 }
 
-func ExampleDay5_Part1() {
-	fmt.Println(Day5Part1(maze()))
+func ExampleDay05_Part1() {
+	fmt.Println(Day05Part1(maze()))
 	// Output: 358309
 }
 
-func ExampleDay5_Part2() {
-	fmt.Println(Day5Part2(maze()))
+func ExampleDay05_Part2() {
+	fmt.Println(Day05Part2(maze()))
 	// Output: 28178177
 }
 

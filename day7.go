@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Day7(r io.Reader) string {
+func Day07(r io.Reader) string {
 	// spec suggests that programs cannot be run multiple times
 	// => avoid tree stuff, just use a plain map and keep
 	// child -> parent instead of parent -> child

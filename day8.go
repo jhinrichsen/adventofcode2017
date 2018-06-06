@@ -96,7 +96,7 @@ func (a Registers) Step(i Instruction) {
 	// a.Dump()
 }
 
-func Day8(r io.Reader) (int, error) {
+func Day08(r io.Reader) (int, error) {
 	registers := Registers{}
 	is, err := instructions(r)
 	if err != nil {

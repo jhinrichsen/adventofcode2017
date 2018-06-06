@@ -7,12 +7,12 @@ import (
 	"testing"
 )
 
-func ExampleDay8() {
+func ExampleDay08() {
 	buf, err := ioutil.ReadFile("testdata/day8.txt")
 	if err != nil {
 		panic(err)
 	}
-	got, err := Day8(bytes.NewReader(buf))
+	got, err := Day08(bytes.NewReader(buf))
 	if err != nil {
 		panic(err)
 	}
@@ -20,13 +20,13 @@ func ExampleDay8() {
 	// Output: 5215
 }
 
-func TestDay8Sample(t *testing.T) {
+func TestDay08Sample(t *testing.T) {
 	buf, err := ioutil.ReadFile("testdata/day8_sample.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
 	want := 1
-	got, err := Day8(bytes.NewReader(buf))
+	got, err := Day08(bytes.NewReader(buf))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,14 +35,14 @@ func TestDay8Sample(t *testing.T) {
 	}
 }
 
-func BenchmarkDay8(b *testing.B) {
+func BenchmarkDay08(b *testing.B) {
 	buf, err := ioutil.ReadFile("testdata/day8.txt")
 	if err != nil {
 		b.Fatal(err)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, err := Day8(bytes.NewReader(buf))
+		_, err := Day08(bytes.NewReader(buf))
 		if err != nil {
 			b.Fatal(err)
 		}

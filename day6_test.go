@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func ExampleDay6() {
+func ExampleDay06() {
 	const nBanks = 16
 	buf, err := ioutil.ReadFile("testdata/day6.txt")
 	if err != nil {
@@ -25,14 +25,14 @@ func ExampleDay6() {
 			panic(fmt.Errorf("error converting col %d: %v\n", i, err))
 		}
 	}
-	fmt.Println(Day6Impl1(banks, nBanks))
+	fmt.Println(Day06Impl1(banks, nBanks))
 	// Output: 5042
 }
 
-func TestDay6Sample(t *testing.T) {
+func TestDay06Sample(t *testing.T) {
 	banks := Banks{0, 2, 7, 0}
 	want := 5
-	got := Day6Impl1(banks, 4)
+	got := Day06Impl1(banks, 4)
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
@@ -52,14 +52,14 @@ func TestArrayAsKeyInMap(t *testing.T) {
 	}
 }
 
-func BenchmarkDay6Impl1(b *testing.B) {
+func BenchmarkDay06Impl1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = Day6Impl1(Banks{0, 2, 7, 0}, 4)
+		_ = Day06Impl1(Banks{0, 2, 7, 0}, 4)
 	}
 }
 
-func BenchmarkDay6Impl2(b *testing.B) {
+func BenchmarkDay06Impl2(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = Day6Impl2([]int{0, 2, 7, 0})
+		_ = Day06Impl2([]int{0, 2, 7, 0})
 	}
 }

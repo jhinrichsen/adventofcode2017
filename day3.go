@@ -63,7 +63,7 @@ func Y(n int) int {
 // A recursive implementation is used that produces a stack overflow for values
 // around 1e8. The recursive call can be replaced by a loop based impl using
 // Delta() only.
-func Day3(square int) int {
+func Day03(square int) int {
 	x, y := X(square), Y(square)
 	// Steps are x + y coordinates, ignoring any sign indicating up/down
 	// resp. left/right

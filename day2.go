@@ -1,6 +1,6 @@
 package adventofcode2017
 
-func Day2(spreadsheet [][]int) int {
+func Day02(spreadsheet [][]int) int {
 	sum := 0
 	for _, row := range spreadsheet {
 		min := row[0]

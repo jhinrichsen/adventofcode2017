@@ -6,7 +6,7 @@ import "strings"
 
 // Day4 returns the number of valid pass phrases
 // valid := contains no duplicate words, separated by space
-func Day4(passphrases []string) int {
+func Day04(passphrases []string) int {
 	n := 0
 outer:
 	for _, p := range passphrases {

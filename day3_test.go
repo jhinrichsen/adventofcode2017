@@ -17,12 +17,12 @@ type DistanceTestdata struct {
 	dist int
 }
 
-func ExampleDay3() {
-	fmt.Println(Day3(361527))
+func ExampleDay03() {
+	fmt.Println(Day03(361527))
 	// Output: 326
 }
 
-func TestDay3(t *testing.T) {
+func TestDay03(t *testing.T) {
 	// values taken from spec
 	testdata := [][]int{
 		{1, 0},
@@ -33,7 +33,7 @@ func TestDay3(t *testing.T) {
 	for _, pair := range testdata {
 		square := pair[0]
 		want := pair[1]
-		got := Day3(square)
+		got := Day03(square)
 		if want != got {
 			t.Fatalf("square %d: want %d but got %d\n",
 				square, want, got)
@@ -41,7 +41,7 @@ func TestDay3(t *testing.T) {
 	}
 }
 
-func TestDay3A174344(t *testing.T) {
+func TestDay03A174344(t *testing.T) {
 	f, err := os.Open("testdata/b174344.txt")
 	if err != nil {
 		t.Fatal(err)
@@ -75,8 +75,8 @@ func TestDay3A174344(t *testing.T) {
 	}
 }
 
-func BenchmarkDay3(b *testing.B) {
+func BenchmarkDay03(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Day3(361527)
+		Day03(361527)
 	}
 }
