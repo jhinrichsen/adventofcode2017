@@ -4,9 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"testing"
 )
+
+func ExampleDay1() {
+	in, _ := input()
+	fmt.Println(Day1(in))
+	// Output: 1029
+}
 
 func TestDay1Sample(t *testing.T) {
 	var ts = []struct {
@@ -41,15 +46,6 @@ func input() ([]byte, error) {
 		buf[i] = buf[i] - '0'
 	}
 	return buf, nil
-}
-
-func TestDay1(t *testing.T) {
-	in, err := input()
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := Day1(in)
-	log.Printf("day 1: got %d\n", got)
 }
 
 func BenchmarkDay1(b *testing.B) {

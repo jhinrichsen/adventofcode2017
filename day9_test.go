@@ -1,10 +1,19 @@
 package adventofcode2017
 
 import (
+	"fmt"
 	"io/ioutil"
-	"log"
 	"testing"
 )
+
+func ExampleDay9() {
+	buf, err := ioutil.ReadFile("testdata/day9.txt")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(Day9(buf))
+	// Output: 10616
+}
 
 func TestDay9Samples(t *testing.T) {
 	var es = []struct {
@@ -29,15 +38,6 @@ func TestDay9Samples(t *testing.T) {
 			t.Fatalf("test set #%d: want %v but got %v\n", i, want, got)
 		}
 	}
-}
-
-func TestDay9(t *testing.T) {
-	buf, err := ioutil.ReadFile("testdata/day9.txt")
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := Day9(buf)
-	log.Printf("day 9: got %d\n", got)
 }
 
 func BenchmarkDay9(b *testing.B) {

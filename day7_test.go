@@ -2,11 +2,20 @@ package adventofcode2017
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"testing"
 )
+
+func ExampleDay7() {
+	f, err := os.Open("testdata/day7.txt")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(Day7(f))
+	// Output: eugwuhl
+}
 
 func TestDay7Sample(t *testing.T) {
 	want := "tknk"
@@ -18,15 +27,6 @@ func TestDay7Sample(t *testing.T) {
 	if want != got {
 		t.Fatalf("want %v but got %v\n", want, got)
 	}
-}
-
-func TestDay7(t *testing.T) {
-	f, err := os.Open("testdata/day7.txt")
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := Day7(f)
-	log.Printf("day 7: got %v\n", got)
 }
 
 func BenchmarkDay7(b *testing.B) {

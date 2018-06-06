@@ -2,10 +2,23 @@ package adventofcode2017
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"testing"
 )
+
+func ExampleDay8() {
+	buf, err := ioutil.ReadFile("testdata/day8.txt")
+	if err != nil {
+		panic(err)
+	}
+	got, err := Day8(bytes.NewReader(buf))
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(got)
+	// Output: 5215
+}
 
 func TestDay8Sample(t *testing.T) {
 	buf, err := ioutil.ReadFile("testdata/day8_sample.txt")
@@ -20,18 +33,6 @@ func TestDay8Sample(t *testing.T) {
 	if want != got {
 		t.Fatalf("want %v but got %v\n", want, got)
 	}
-}
-
-func TestDay8(t *testing.T) {
-	buf, err := ioutil.ReadFile("testdata/day8.txt")
-	if err != nil {
-		t.Fatal(err)
-	}
-	got, err := Day8(bytes.NewReader(buf))
-	if err != nil {
-		t.Fatal(err)
-	}
-	log.Printf("day 8: got %v\n", got)
 }
 
 func BenchmarkDay8(b *testing.B) {

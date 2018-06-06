@@ -1,10 +1,16 @@
 package adventofcode2017
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"testing"
 )
+
+func ExampleDay12() {
+	f, _ := os.Open("testdata/day12.txt")
+	fmt.Println(Day12(f))
+	// Output: 283
+}
 
 func TestDay12Sample(t *testing.T) {
 	f, err := os.Open("testdata/day12_sample.txt")
@@ -16,15 +22,6 @@ func TestDay12Sample(t *testing.T) {
 	if want != got {
 		t.Fatalf("want %v but got %v\n", want, got)
 	}
-}
-
-func TestDay12(t *testing.T) {
-	f, err := os.Open("testdata/day12.txt")
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := Day12(f)
-	log.Printf("day 12: got %d\n", got)
 }
 
 func BenchmarkDay12(b *testing.B) {

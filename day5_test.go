@@ -2,10 +2,8 @@ package adventofcode2017
 
 import (
 	"bufio"
-	"log"
+	"fmt"
 	"os"
-	"reflect"
-	"runtime"
 	"strconv"
 	"testing"
 )
@@ -28,18 +26,20 @@ func TestDay5Part2(t *testing.T) {
 	}
 }
 
-func TestMyDay5Part1(t *testing.T) {
-	test(t, Day5Part1)
+func ExampleDay5_Part1() {
+	fmt.Println(Day5Part1(maze()))
+	// Output: 358309
 }
 
-func TestMyDay5Part2(t *testing.T) {
-	test(t, Day5Part2)
+func ExampleDay5_Part2() {
+	fmt.Println(Day5Part2(maze()))
+	// Output: 28178177
 }
 
-func test(t *testing.T, part func([]int) int) {
+func maze() []int {
 	f, err := os.Open("testdata/day5.txt")
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 	var maze []int
 	sc := bufio.NewScanner(f)
@@ -51,11 +51,9 @@ func test(t *testing.T, part func([]int) int) {
 		}
 		i, err := strconv.Atoi(s)
 		if err != nil {
-			t.Fatal(err)
+			panic(err)
 		}
 		maze = append(maze, i)
 	}
-	log.Printf("%v: got %d\n",
-		runtime.FuncForPC(reflect.ValueOf(part).Pointer()).Name(),
-		part(maze))
+	return maze
 }

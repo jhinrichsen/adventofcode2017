@@ -2,6 +2,7 @@ package adventofcode2017
 
 import (
 	"bufio"
+	"fmt"
 	"math"
 	"os"
 	"strconv"
@@ -14,6 +15,11 @@ type DistanceTestdata struct {
 	pos1 [2]int
 	pos2 [2]int
 	dist int
+}
+
+func ExampleDay3() {
+	fmt.Println(Day3(361527))
+	// Output: 326
 }
 
 func TestDay3(t *testing.T) {
@@ -32,15 +38,6 @@ func TestDay3(t *testing.T) {
 			t.Fatalf("square %d: want %d but got %d\n",
 				square, want, got)
 		}
-	}
-}
-
-func TestDay3My(t *testing.T) {
-	n := 361527
-	want := 326
-	got := Day3(n)
-	if want != got {
-		t.Fatalf("want %d but got %d\n", want, got)
 	}
 }
 

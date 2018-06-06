@@ -3,12 +3,17 @@ package adventofcode2017
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
 	"testing"
 )
+
+func ExampleDay2() {
+	in, _ := inputDay2("testdata/day2.txt")
+	fmt.Println(Day2(in))
+	// Output: 47623
+}
 
 func TestDay2Sample(t *testing.T) {
 	spreadsheet := [][]int{
@@ -56,15 +61,6 @@ func dumpDay2(iss [][]int) {
 		}
 		fmt.Println()
 	}
-}
-
-func TestDay2(t *testing.T) {
-	in, err := inputDay2("testdata/day2.txt")
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := Day2(in)
-	log.Printf("day 2: got %d\n", got)
 }
 
 func TestDay2SampleInput(t *testing.T) {
