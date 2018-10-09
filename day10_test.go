@@ -105,7 +105,7 @@ func from(filename string) ([]int, error) {
 	for i := 0; i < len(ss); i++ {
 		n, err := strconv.Atoi(ss[i])
 		if err != nil {
-			return nil, fmt.Errorf("cannot convert number to int at column %d\n", i)
+			return nil, fmt.Errorf("cannot convert number to int at column %d", i)
 		}
 		is = append(is, n)
 	}

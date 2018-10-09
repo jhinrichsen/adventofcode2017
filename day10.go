@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-var Day10LengthError = fmt.Errorf("illegal length")
+var ErrorDay10Length = fmt.Errorf("illegal length")
 
 func Day10(list []int, lengths []int) int {
 	day10Hash(list, lengths)
@@ -28,12 +28,12 @@ func Day10PreconditionLength(list []int, lengths []int) ([]int, error) {
 		}
 	}
 	if len(errors) > 0 {
-		return errors, Day10LengthError
+		return errors, ErrorDay10Length
 	}
 	return nil, nil
 }
 
-// in-place reverse slice list[idx:idx+n], wrapping n if n > len(list)
+// Day10Reverse in-place reverse slice list[idx:idx+n], wrapping n if n > len(list)
 func Day10Reverse(list []int, idx int, n int) {
 	wrap := func(i int) int {
 		return i % len(list)
