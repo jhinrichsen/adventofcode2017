@@ -4,7 +4,7 @@ package adventofcode2017
 
 import "strings"
 
-// Day4 returns the number of valid pass phrases
+// Day4 returns the number of valid pass phrases.
 // valid := contains no duplicate words, separated by space
 func Day04(passphrases []string) int {
 	n := 0

@@ -44,7 +44,7 @@ func inputDay02(filename string) ([][]int, error) {
 		for i := range fs {
 			n, err := strconv.Atoi(fs[i])
 			if err != nil {
-				return iss, fmt.Errorf("cannot convert column %d to int: %+v\n", i, fs[i])
+				return iss, fmt.Errorf("cannot convert column %d to int: %+v", i, fs[i])
 			}
 			is = append(is, n)
 		}

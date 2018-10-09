@@ -117,7 +117,7 @@ func instructions(r io.Reader) ([]Instruction, error) {
 		line := sc.Text()
 		i, err := parseInstruction(line)
 		if err != nil {
-			return is, fmt.Errorf("line %d: %v\n", lineN, err)
+			return is, fmt.Errorf("line %d: %v", lineN, err)
 		}
 		is = append(is, i)
 	}
@@ -130,7 +130,7 @@ func parseInstruction(is string) (Instruction, error) {
 	want := 7
 	got := len(fs)
 	if want != got {
-		return Instruction{}, fmt.Errorf("%s: want %d fields but got %d\n", is, want, got)
+		return Instruction{}, fmt.Errorf("%s: want %d fields but got %d", is, want, got)
 	}
 	var col1 bool
 	if fs[1] == "inc" {
@@ -138,16 +138,16 @@ func parseInstruction(is string) (Instruction, error) {
 	} else if fs[1] == "dec" {
 		col1 = false
 	} else {
-		return i, fmt.Errorf("want 'inc' or 'dec' but got %s\n", fs[1])
+		return i, fmt.Errorf("want 'inc' or 'dec' but got %s", fs[1])
 	}
 
 	col2, err := strconv.Atoi(fs[2])
 	if err != nil {
-		return i, fmt.Errorf("cannot convert column 2 to int: %s\n", fs[2])
+		return i, fmt.Errorf("cannot convert column 2 to int: %s", fs[2])
 	}
 	col6, err := strconv.Atoi(fs[6])
 	if err != nil {
-		return i, fmt.Errorf("cannot convert column 6 to int: %s\n", fs[6])
+		return i, fmt.Errorf("cannot convert column 6 to int: %s", fs[6])
 	}
 
 	var col5 Cmp
@@ -165,7 +165,7 @@ func parseInstruction(is string) (Instruction, error) {
 	case ">=":
 		col5 = GE
 	default:
-		return i, fmt.Errorf("want column 5 to be one of ==, <, <=, >, or <= but got %s\n", fs[5])
+		return i, fmt.Errorf("want column 5 to be one of ==, <, <=, >, or <= but got %s", fs[5])
 	}
 	return Instruction{
 		Operation{

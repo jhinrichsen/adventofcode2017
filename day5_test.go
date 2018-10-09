@@ -26,12 +26,12 @@ func TestDay05Part2(t *testing.T) {
 	}
 }
 
-func ExampleDay05_Part1() {
+func ExampleDay05Part1() {
 	fmt.Println(Day05Part1(maze()))
 	// Output: 358309
 }
 
-func ExampleDay05_Part2() {
+func ExampleDay05Part2() {
 	fmt.Println(Day05Part2(maze()))
 	// Output: 28178177
 }

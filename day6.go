@@ -17,9 +17,15 @@ func dump6(banks []int) {
 	fmt.Println()
 }
 
+// Banks domain model
 type Banks [16]int
 
-// Day6 returns number of redistributions.
+// Day06 implements Day 6.
+func Day06(banks Banks, activeBanks int) int {
+	return Day06Impl1(banks, activeBanks)
+}
+
+// Day06Impl1 returns number of redistributions.
 func Day06Impl1(banks Banks, activeBanks int) int {
 	// return index and value of max bank
 	max := func() (int, int) {

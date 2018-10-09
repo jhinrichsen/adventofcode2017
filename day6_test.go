@@ -16,13 +16,13 @@ func ExampleDay06() {
 	}
 	fs := strings.Fields(string(buf))
 	if len(fs) != nBanks {
-		panic(fmt.Errorf("want %d fields but got %d\n", nBanks, len(fs)))
+		panic(fmt.Errorf("want %d fields but got %d", nBanks, len(fs)))
 	}
 	var banks Banks
 	for i := 0; i < nBanks; i++ {
 		banks[i], err = strconv.Atoi(fs[i])
 		if err != nil {
-			panic(fmt.Errorf("error converting col %d: %v\n", i, err))
+			panic(fmt.Errorf("error converting col %d: %v", i, err))
 		}
 	}
 	fmt.Println(Day06Impl1(banks, nBanks))

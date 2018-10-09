@@ -1,6 +1,6 @@
 package adventofcode2017
 
-// Day1 finds the sum of all digits that match the next digit
+// Day01 finds the sum of all digits that match the next digit
 func Day01(digits []byte) int {
 	sum := 0
 	cycle := len(digits)

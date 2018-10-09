@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// Day5 returns the number of steps until outside of maze.
+// Day05Part1 returns the number of steps until outside of maze.
 func Day05Part1(maze []int) int {
 	index := 0
 	prev := index
@@ -41,7 +41,7 @@ func dump(maze []int, index int) {
 	fmt.Println()
 }
 
-// Day5 returns the number of steps until outside of maze.
+// Day05Part2 returns the number of steps until outside of maze.
 func Day05Part2(maze []int) int {
 	index := 0
 	prev := index

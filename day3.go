@@ -59,7 +59,7 @@ func Y(n int) int {
 	return Transform(n, math.Cos, false)
 }
 
-// Day3 returns the number of steps for a given square to square 1.
+// Day3 returns the number of steps for a given square.
 // A recursive implementation is used that produces a stack overflow for values
 // around 1e8. The recursive call can be replaced by a loop based impl using
 // Delta() only.

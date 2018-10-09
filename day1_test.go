@@ -41,7 +41,7 @@ func input() ([]byte, error) {
 	// map from '0'..'9' to 0..9
 	for i := range buf {
 		if buf[i] < '0' || buf[i] > '9' {
-			return buf, fmt.Errorf("index %d out of range: %d\n", i, buf[i])
+			return buf, fmt.Errorf("index %d out of range: %d", i, buf[i])
 		}
 		buf[i] = buf[i] - '0'
 	}
