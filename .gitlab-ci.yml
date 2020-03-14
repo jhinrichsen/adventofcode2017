@@ -1,0 +1,11 @@
+image: golang:latest
+
+stages:
+  - test
+
+test-job:
+  stage: test
+  script:
+    - go version
+    - go test -bench=. -cover
+  coverage: '/coverage: \d+\.\d+%/'
