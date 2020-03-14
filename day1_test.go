@@ -7,10 +7,16 @@ import (
 	"testing"
 )
 
-func ExampleDay01() {
-	in, _ := input()
-	fmt.Println(Day01(in))
-	// Output: 1029
+func TestDay01Part1(t *testing.T) {
+	in, err := input()
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := 1029
+	got := Day01(in)
+	if want != got {
+		t.Fatalf("want %d but got %d", want, got)
+	}
 }
 
 func TestDay01Sample(t *testing.T) {
