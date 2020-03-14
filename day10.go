@@ -2,7 +2,6 @@ package adventofcode2017
 
 import (
 	"fmt"
-	"log"
 )
 
 var ErrorDay10Length = fmt.Errorf("illegal length")
@@ -39,11 +38,7 @@ func Day10Reverse(list []int, idx int, n int) {
 		return i % len(list)
 	}
 	swap := func(x, y int) {
-		log.Printf("swap before: %+v\n", list)
-		log.Printf("swapping index %d <-> %d\n", x, y)
-		log.Printf("swapping logical index %d <-> %d\n", wrap(x), wrap(y))
 		list[wrap(x)], list[wrap(y)] = list[wrap(y)], list[wrap(x)]
-		log.Printf("swap after: %+v\n", list)
 	}
 	for lower, upper := idx, idx+n-1; lower < upper; lower, upper = lower+1, upper-1 {
 		swap(lower, upper)
