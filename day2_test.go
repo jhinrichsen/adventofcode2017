@@ -9,20 +9,26 @@ import (
 	"testing"
 )
 
-func ExampleDay02() {
-	in, _ := inputDay02("testdata/day2.txt")
-	fmt.Println(Day02(in))
-	// Output: 47623
+func TestDay02Part1(t *testing.T) {
+	const want = 44216
+	in, err := inputDay02(filename(2))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := Day2Part1(in)
+	if want != got {
+		t.Fatalf("want %d but got %d\n", want, got)
+	}
 }
 
 func TestDay02Sample(t *testing.T) {
+	const want = 18
 	spreadsheet := [][]int{
 		{5, 1, 9, 5},
 		{7, 5, 3, 3}, // trailing 3 is a context aware NIL/ empty cell
 		{2, 4, 6, 8},
 	}
-	want := 18
-	got := Day02(spreadsheet)
+	got := Day2Part1(spreadsheet)
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
@@ -50,26 +56,16 @@ func inputDay02(filename string) ([][]int, error) {
 		}
 		iss = append(iss, is)
 	}
-	// dumpDay02(iss)
 	return iss, nil
 }
 
-func dumpDay02(iss [][]int) {
-	for row := range iss {
-		for col := range iss[row] {
-			fmt.Printf("%4d ", iss[row][col])
-		}
-		fmt.Println()
-	}
-}
-
 func TestDay02SampleInput(t *testing.T) {
-	in, err := inputDay02("testdata/day2_sample.txt")
+	const want = 18
+	in, err := inputDay02(exampleFilename(2))
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := 18
-	got := Day02(in)
+	got := Day2Part1(in)
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
@@ -80,7 +76,33 @@ func BenchmarkDay02(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Day02(in)
+		Day2Part1(in)
+	}
+}
+
+func TestDay2Part2Example(t *testing.T) {
+	const want = 9
+	var spreadSheet = [][]int{
+		{5, 9, 2, 8},
+		{9, 4, 7, 3},
+		{3, 8, 6, 5},
+	}
+	got := Day2Part2(spreadSheet)
+	if want != got {
+		t.Fatalf("want %d but got %d", want, got)
+	}
+}
+
+func TestDay2Part2(t *testing.T) {
+	const want = 320
+	in, err := inputDay02(filename(2))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := Day2Part2(in)
+	if want != got {
+		t.Fatalf("want %d but got %d\n", want, got)
 	}
 }
