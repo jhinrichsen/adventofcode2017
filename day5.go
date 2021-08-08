@@ -1,9 +1,5 @@
 package adventofcode2017
 
-import (
-	"fmt"
-)
-
 // Day05Part1 returns the number of steps until outside of maze.
 func Day05Part1(maze []int) int {
 	index := 0
@@ -26,19 +22,6 @@ func Day05Part1(maze []int) int {
 		n++
 	}
 	return n
-}
-
-func dump(maze []int, index int) {
-	for i := range maze {
-		var format string
-		if i == index {
-			format = "(%2d) "
-		} else {
-			format = " %2d  "
-		}
-		fmt.Printf(format, maze[i])
-	}
-	fmt.Println()
 }
 
 // Day05Part2 returns the number of steps until outside of maze.

@@ -2,13 +2,12 @@ package adventofcode2017
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"testing"
 )
 
-func TestDay05Part1(t *testing.T) {
+func TestDay05Part1Example(t *testing.T) {
 	maze := []int{0, 3, 0, 1, -3}
 	want := 5
 	got := Day05Part1(maze)
@@ -17,7 +16,7 @@ func TestDay05Part1(t *testing.T) {
 	}
 }
 
-func TestDay05Part2(t *testing.T) {
+func TestDay05Part2Example(t *testing.T) {
 	maze := []int{0, 3, 0, 1, -3}
 	want := 10
 	got := Day05Part2(maze)
@@ -26,14 +25,20 @@ func TestDay05Part2(t *testing.T) {
 	}
 }
 
-func ExampleDay05Part1() {
-	fmt.Println(Day05Part1(maze()))
-	// Output: 358309
+func TestDay05Part1(t *testing.T) {
+	want := 355965
+	got := Day05Part1(maze())
+	if want != got {
+		t.Fatalf("want %d but got %d\n", want, got)
+	}
 }
 
-func ExampleDay05Part2() {
-	fmt.Println(Day05Part2(maze()))
-	// Output: 28178177
+func TestDay05Part2(t *testing.T) {
+	want := 26948068
+	got := Day05Part2(maze())
+	if want != got {
+		t.Fatalf("want %d but got %d\n", want, got)
+	}
 }
 
 func maze() []int {
