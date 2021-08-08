@@ -2,7 +2,6 @@ package adventofcode2017
 
 import (
 	"bufio"
-	"fmt"
 	"math"
 	"os"
 	"strconv"
@@ -10,19 +9,24 @@ import (
 	"testing"
 )
 
+const day3Input = 368078
+
 // Nested anonymous structs cannot be initialized in a nice way
 type DistanceTestdata struct {
-	pos1 [2]int
-	pos2 [2]int
-	dist int
-}
-
-func ExampleDay03() {
-	fmt.Println(Day03(361527))
-	// Output: 326
+	_ [2]int // pos1
+	_ [2]int // pos2
+	_ int    // dist
 }
 
 func TestDay03(t *testing.T) {
+	want := 371
+	got := Day3Part1(day3Input)
+	if want != got {
+		t.Fatalf("want %d but got %d", want, got)
+	}
+}
+
+func TestDay03Examples(t *testing.T) {
 	// values taken from spec
 	testdata := [][]int{
 		{1, 0},
@@ -33,7 +37,7 @@ func TestDay03(t *testing.T) {
 	for _, pair := range testdata {
 		square := pair[0]
 		want := pair[1]
-		got := Day03(square)
+		got := Day3Part1(square)
 		if want != got {
 			t.Fatalf("square %d: want %d but got %d\n",
 				square, want, got)
@@ -65,7 +69,7 @@ func TestDay03A174344(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		got := Transform(idx, math.Sin, false)
+		got := transform(idx, math.Sin, false)
 		if want != got {
 			t.Fatalf("n=%d: want %d but got %d\n", idx, want, got)
 		}
@@ -75,8 +79,21 @@ func TestDay03A174344(t *testing.T) {
 	}
 }
 
-func BenchmarkDay03(b *testing.B) {
+func BenchmarkDay3Part1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Day03(361527)
+		Day3Part1(day3Input)
+	}
+}
+
+func TestDay3Part2(t *testing.T) {
+	const want = 369601
+	got := Day3Part2(day3Input)
+	if want != got {
+		t.Fatalf("want %d but got %d", want, got)
+	}
+}
+func BenchmarkDay3Part2(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Day3Part2(day3Input)
 	}
 }
