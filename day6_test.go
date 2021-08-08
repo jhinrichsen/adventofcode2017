@@ -1,38 +1,39 @@
 package adventofcode2017
 
 import (
-	"fmt"
-	"io/ioutil"
 	"strconv"
 	"strings"
 	"testing"
 )
 
-func ExampleDay06() {
+func TestDay6Part1(t *testing.T) {
+	const want = 4074
 	const nBanks = 16
-	buf, err := ioutil.ReadFile("testdata/day6.txt")
+	ss, err := linesFromFilename(filename(6))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	fs := strings.Fields(string(buf))
+	fs := strings.Fields(ss[0])
 	if len(fs) != nBanks {
-		panic(fmt.Errorf("want %d fields but got %d", nBanks, len(fs)))
+		t.Fatalf("want %d fields but got %d", nBanks, len(fs))
 	}
 	var banks Banks
 	for i := 0; i < nBanks; i++ {
 		banks[i], err = strconv.Atoi(fs[i])
 		if err != nil {
-			panic(fmt.Errorf("error converting col %d: %v", i, err))
+			t.Fatalf("error converting col %d: %v", i, err)
 		}
 	}
-	fmt.Println(Day06Impl1(banks, nBanks))
-	// Output: 5042
+	got := Day6Part1(banks, nBanks)
+	if want != got {
+		t.Fatalf("want %d but got %d", want, got)
+	}
 }
 
-func TestDay06Sample(t *testing.T) {
+func TestDay6Part1Example(t *testing.T) {
+	const want = 5
 	banks := Banks{0, 2, 7, 0}
-	want := 5
-	got := Day06Impl1(banks, 4)
+	got := Day6Part1(banks, 4)
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
@@ -52,14 +53,8 @@ func TestArrayAsKeyInMap(t *testing.T) {
 	}
 }
 
-func BenchmarkDay06Impl1(b *testing.B) {
+func BenchmarkDay6Part1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = Day06Impl1(Banks{0, 2, 7, 0}, 4)
-	}
-}
-
-func BenchmarkDay06Impl2(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_ = Day06Impl2([]int{0, 2, 7, 0})
+		_ = Day6Part1(Banks{0, 2, 7, 0}, 4)
 	}
 }
