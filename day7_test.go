@@ -1,41 +1,109 @@
 package adventofcode2017
 
 import (
-	"bytes"
 	"fmt"
-	"io/ioutil"
-	"os"
+	"reflect"
 	"testing"
 )
 
-func ExampleDay07() {
-	f, err := os.Open("testdata/day7.txt")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(Day07(f))
-	// Output: eugwuhl
-}
-
-func TestDay07Sample(t *testing.T) {
-	want := "tknk"
-	buf, err := ioutil.ReadFile("testdata/day7_sample.txt")
+func TestDay7Part1Example(t *testing.T) {
+	const want = "tknk"
+	ss, err := linesFromFilename(exampleFilename(7))
 	if err != nil {
 		t.Fatal(err)
 	}
-	got := Day07(bytes.NewReader(buf))
+	got := Day7Part1(ss)
 	if want != got {
 		t.Fatalf("want %v but got %v\n", want, got)
 	}
 }
 
-func BenchmarkDay07(b *testing.B) {
-	f, err := os.Open("testdata/day7.txt")
+func TestDay7Part1(t *testing.T) {
+	const want = "veboyvy"
+	ss, err := linesFromFilename(filename(7))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := Day7Part1(ss)
+	if want != got {
+		t.Fatalf("want %v but got %v\n", want, got)
+	}
+}
+
+func BenchmarkDay7(b *testing.B) {
+	ss, err := linesFromFilename(filename(7))
 	if err != nil {
 		b.Fatal(err)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Day07(f)
+		Day7Part1(ss)
 	}
+}
+
+func TestNewProgramLeaf(t *testing.T) {
+	const (
+		name   = "abcde"
+		weight = 13
+	)
+	want := program{"abcde", 13, nil, -1, 0}
+	got, err := NewProgram(fmt.Sprintf("%s (%d)", name, weight))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(want, got) {
+		t.Fatalf("want %+v but got %+v", want, got)
+	}
+}
+
+func TestNewProgramDisk(t *testing.T) {
+	const (
+		name   = "abcde"
+		weight = 13
+		disk1  = "bcdef"
+		disk2  = "cdefg"
+	)
+	m := make(Disk)
+	m[disk1] = true
+	m[disk2] = true
+	want := program{"abcde", 13, m, -1, 0}
+	s := fmt.Sprintf("%s (%d) -> %s, %s", name, weight, disk1, disk2)
+	got, err := NewProgram(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(want, got) {
+		t.Fatalf("want %+v but got %+v", want, got)
+	}
+}
+
+func TestDay7Part2Example(t *testing.T) {
+	const want = 60
+	ss, err := linesFromFilename(exampleFilename(7))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := Day7Part2(ss)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want != got {
+		t.Fatalf("want %v but got %v\n", want, got)
+	}
+}
+
+func TestDay7Part2(t *testing.T) {
+	const want = 17561 // too high
+	ss, err := linesFromFilename(filename(7))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := Day7Part2(ss)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want != got {
+		t.Fatalf("want %v but got %v\n", want, got)
+	}
+
 }

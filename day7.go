@@ -1,19 +1,19 @@
 package adventofcode2017
 
 import (
-	"bufio"
-	"io"
+	"fmt"
+	"log"
+	"strconv"
 	"strings"
 )
 
-func Day07(r io.Reader) string {
+func Day7Part1(ss []string) string {
 	// spec suggests that programs cannot be run multiple times
 	// => avoid tree stuff, just use a plain map and keep
 	// child -> parent instead of parent -> child
 	var bottoms = make(map[string]string)
-	sc := bufio.NewScanner(r)
-	for sc.Scan() {
-		fs := strings.Fields(sc.Text())
+	for _, s := range ss {
+		fs := strings.Fields(s)
 		// only interested in parents
 		if len(fs) > 3 {
 			bottom := fs[0]
@@ -38,3 +38,198 @@ func Day07(r io.Reader) string {
 	}
 	return pid
 }
+
+type Disk map[string]bool
+
+type program struct {
+	Name   string
+	Weight int
+	Disks  Disk
+
+	Level      int // level 0 is bottom
+	DiskWeight int
+}
+
+func (a program) TotalWeight() int {
+	return a.Weight + a.DiskWeight
+}
+
+// NewProgram parses a string represenation into a domain model.
+// Examples:
+// ktlj (57)
+// fwft (72) -> ktlj, cntj, xhth
+func NewProgram(s string) (program, error) {
+	parts := strings.Fields(s)
+	n, err := strconv.Atoi(parts[1][1 : len(parts[1])-1])
+	if err != nil {
+		return program{}, err
+	}
+	p := program{parts[0], n, nil, -1, 0}
+	if len(parts) > 3 {
+		p.Disks = make(Disk)
+		for _, s := range parts[3:] {
+			p.Disks[strings.TrimRight(s, ",")] = true
+		}
+	}
+	return p, nil
+}
+
+// Day7Part2 returns the excess weight to balance the complete tower.
+func Day7Part2(ss []string) (uint, error) {
+	programs := make(map[string]program)
+	bottoms := make(map[string]string)
+
+	// parse programs
+
+	var line uint
+	for _, s := range ss {
+		line++ // 1-based line counter
+		p, err := NewProgram(s)
+		if err != nil {
+			return 0,
+				fmt.Errorf("error parsing line %d: %v", line, err)
+		}
+		for key := range p.Disks {
+			bottoms[key] = p.Name
+		}
+		programs[p.Name] = p
+	}
+
+	// calculate level for each program
+
+	level := func(p string) int {
+		n := -1
+		hasBottom := true
+		for hasBottom {
+			p, hasBottom = bottoms[p]
+			n++
+		}
+		return n
+	}
+	var maxLevel int
+	// TODO level map instead of level member
+	for _, p := range programs {
+		p.Level = level(p.Name)
+		programs[p.Name] = p
+		if p.Level > maxLevel {
+			maxLevel = p.Level
+		}
+		if p.Level == 1 {
+			log.Printf("%q is level %d\n", p.Name, p.Level)
+		}
+	}
+
+	// calculate disk weights top down
+
+	for level := maxLevel - 1; level >= 0; level-- {
+		for _, p := range programs {
+			if p.Level != level {
+				continue
+			}
+			for d := range p.Disks {
+				p2 := programs[d]
+				p.DiskWeight += p2.TotalWeight()
+			}
+			programs[p.Name] = p
+		}
+	}
+
+	balanced := func(p program) bool {
+		m := make(map[int]bool)
+		for name := range p.Disks {
+			w := programs[name].TotalWeight()
+			m[w] = true
+		}
+		return len(m) == 1
+	}
+
+	// find highest unbalanced program bottom up
+
+	bottom := func() program {
+		for i := range programs {
+			if programs[i].Level == 0 {
+				return programs[i]
+			}
+		}
+		panic("cannot find bottom program")
+	}
+	// list of unbalanced disks
+	unbalanced := func(p program) []program {
+		var ps []program
+		for s := range p.Disks {
+			p2 := programs[s]
+			if !balanced(p2) {
+				ps = append(ps, p2)
+			}
+		}
+		return ps
+	}
+	p := bottom()
+	log.Printf("found bottom node %q", p.Name)
+	previous := p
+	for {
+		ps := unbalanced(p)
+		if len(ps) == 0 {
+			// reached the node that is unbalanced, but its disk is
+			// balanced
+			break
+		}
+		if len(ps) != 1 {
+			s := fmt.Sprintf("expecting exactly 1 unbalanced disk but got %d",
+				len(ps))
+			panic(s)
+		}
+		previous = p
+		p = ps[0]
+		log.Printf("going up to unbalanced tower %v", p)
+	}
+	log.Printf("highest balanced disk: %q", p.Name)
+	log.Printf("previous: %v", previous)
+	log.Printf("unbalanced(%v): %v", previous, unbalanced(previous))
+	return 0, nil
+}
+
+/*
+	prospects := make(map[string]bool) // programs in this level
+	weights := make(map[int]int)       // weight -> n
+	weight := p.TotalWeight()
+	weights[weight]++
+	prospects[p.Name] = true
+	fmt.Printf("%q weighs %d (%d+%d)\n",
+		p.Name, weight, p.Weight, p.DiskWeight)
+	fmt.Printf("balanced: %v, disk weights: ", balanced(p))
+	for name := range p.Disks {
+		fmt.Printf("%d ", programs[name].TotalWeight())
+	}
+	fmt.Printf("\n")
+	if len(weights) == 1 { // balanced
+		continue
+	}
+	if len(weights) != 2 {
+		e := fmt.Errorf("want 2 different weights but got %d",
+			len(weights))
+		return 0, e
+	}
+
+	// find the one anomaly
+	var standardWeight, anomalyWeight int
+	for weight, n := range weights {
+		if n == 1 {
+			anomalyWeight = weight
+		} else {
+			standardWeight = weight
+		}
+	}
+	delta := standardWeight - anomalyWeight
+	log.Printf("standard = %d, anomaly = %d, delta = %d",
+		standardWeight, anomalyWeight, delta)
+
+	// back track from weight to program
+	for name := range prospects {
+		p := programs[name]
+		if p.Weight+p.DiskWeight == anomalyWeight {
+			return uint(p.Weight + delta), nil
+		}
+	}
+	panic("internal state is fubar")
+*/
