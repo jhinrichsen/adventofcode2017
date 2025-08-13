@@ -25,7 +25,7 @@ lint:
 	$(GO) vet
 	$(GO) run honnef.co/go/tools/cmd/staticcheck@latest -version
 	$(GO) run honnef.co/go/tools/cmd/staticcheck@latest
-	$(GO) run github.com/client9/misspell/cmd/misspell *
+	$(GO) run github.com/client9/misspell/cmd/misspell@latest *
 
 .PHONY: prof
 prof: cpu.profile
