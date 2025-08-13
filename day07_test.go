@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+const notSame = "want %v but got %v"
+
 func TestDay07Part1Example(t *testing.T) {
 	const want = "tknk"
 	ss, err := linesFromFilename(exampleFilename(7))
@@ -14,7 +16,7 @@ func TestDay07Part1Example(t *testing.T) {
 	}
 	got := Day07Part1(ss)
 	if want != got {
-		t.Fatalf("want %v but got %v\n", want, got)
+		t.Fatalf(notSame, want, got)
 	}
 }
 
@@ -26,7 +28,7 @@ func TestDay07Part1(t *testing.T) {
 	}
 	got := Day07Part1(ss)
 	if want != got {
-		t.Fatalf("want %v but got %v\n", want, got)
+		t.Fatalf(notSame, want, got)
 	}
 }
 
@@ -52,7 +54,7 @@ func TestNewProgramLeaf(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !reflect.DeepEqual(want, got) {
-		t.Fatalf("want %+v but got %+v", want, got)
+		t.Fatalf(notSame, want, got)
 	}
 }
 
@@ -73,7 +75,7 @@ func TestNewProgramDisk(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !reflect.DeepEqual(want, got) {
-		t.Fatalf("want %+v but got %+v", want, got)
+		t.Fatalf(notSame, want, got)
 	}
 }
 
@@ -88,12 +90,12 @@ func TestDay07Part2Example(t *testing.T) {
 		t.Fatal(err)
 	}
 	if want != got {
-		t.Fatalf("want %v but got %v\n", want, got)
+		t.Fatalf(notSame, want, got)
 	}
 }
 
 func TestDay07Part2(t *testing.T) {
-	const want = 17561 // too high
+	const want = 749
 	ss, err := linesFromFilename(filename(7))
 	if err != nil {
 		t.Fatal(err)
@@ -103,7 +105,6 @@ func TestDay07Part2(t *testing.T) {
 		t.Fatal(err)
 	}
 	if want != got {
-		t.Fatalf("want %v but got %v\n", want, got)
+		t.Fatalf(notSame, want, got)
 	}
-
 }

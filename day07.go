@@ -75,104 +75,138 @@ func NewProgram(s string) (program, error) {
 
 // Day07Part2 returns the excess weight to balance the complete tower.
 func Day07Part2(ss []string) (uint, error) {
-	/*
-		programs := make(map[string]program)
-		bottoms := make(map[string]string)
+	programs := make(map[string]program)
+	bottoms := make(map[string]string)
 
-		// parse programs
+	// parse programs
 
-		var line uint
-		for _, s := range ss {
-			line++ // 1-based line counter
-			p, err := NewProgram(s)
-			if err != nil {
-				return 0,
-					fmt.Errorf("error parsing line %d: %v", line, err)
-			}
-			for key := range p.Disks {
-				bottoms[key] = p.Name
-			}
-			programs[p.Name] = p
+	var line uint
+	for _, s := range ss {
+		line++ // 1-based line counter
+		p, err := NewProgram(s)
+		if err != nil {
+			return 0,
+				fmt.Errorf("error parsing line %d: %v", line, err)
 		}
-
-		// calculate level for each program
-
-		level := func(p string) int {
-			n := -1
-			hasBottom := true
-			for hasBottom {
-				p, hasBottom = bottoms[p]
-				n++
-			}
-			return n
+		for key := range p.Disks {
+			bottoms[key] = p.Name
 		}
-		var maxLevel int
-		// TODO level map instead of level member
+		programs[p.Name] = p
+	}
+
+	// calculate level for each program
+
+	level := func(p string) int {
+		n := -1
+		hasBottom := true
+		for hasBottom {
+			p, hasBottom = bottoms[p]
+			n++
+		}
+		return n
+	}
+	var maxLevel int
+	for _, p := range programs {
+		p.Level = level(p.Name)
+		programs[p.Name] = p
+		if p.Level > maxLevel {
+			maxLevel = p.Level
+		}
+	}
+
+	// calculate disk weights top down
+	for level := maxLevel - 1; level >= 0; level-- {
 		for _, p := range programs {
-			p.Level = level(p.Name)
+			if p.Level != level {
+				continue
+			}
+			for d := range p.Disks {
+				p2 := programs[d]
+				p.DiskWeight += p2.TotalWeight()
+			}
 			programs[p.Name] = p
-			if p.Level > maxLevel {
-				maxLevel = p.Level
-			}
 		}
+	}
 
-		// calculate disk weights top down
+	balanced := func(p program) bool {
+		m := make(map[int]bool)
+		for name := range p.Disks {
+			w := programs[name].TotalWeight()
+			m[w] = true
+		}
+		return len(m) == 1
+	}
 
-		for level := maxLevel - 1; level >= 0; level-- {
-			for _, p := range programs {
-				if p.Level != level {
-					continue
-				}
-				for d := range p.Disks {
-					p2 := programs[d]
-					p.DiskWeight += p2.TotalWeight()
-				}
-				programs[p.Name] = p
+	// find highest unbalanced program bottom up
+	bottom := func() program {
+		for i := range programs {
+			if programs[i].Level == 0 {
+				return programs[i]
 			}
 		}
+		panic("cannot find bottom program")
+	}
+	// list of unbalanced disks
+	unbalanced := func(p program) []program {
+		var ps []program
+		for s := range p.Disks {
+			p2 := programs[s]
+			if !balanced(p2) {
+				ps = append(ps, p2)
+			}
+		}
+		return ps
+	}
+	p := bottom()
+	for {
+		ps := unbalanced(p)
+		if len(ps) == 0 {
+			// reached the node that is unbalanced, but its disk is balanced
+			break
+		}
+		if len(ps) != 1 {
+			s := fmt.Sprintf("expecting exactly 1 unbalanced disk but got %d", len(ps))
+			panic(s)
+		}
+		// descend into the only unbalanced child
+		p = ps[0]
+	}
 
-		balanced := func(p program) bool {
-			m := make(map[int]bool)
-			for name := range p.Disks {
-				w := programs[name].TotalWeight()
-				m[w] = true
-			}
-			return len(m) == 1
+	// Now p is the deepest node whose children themselves are balanced, but p's
+	// immediate children totals are not equal. Identify the outlier child and
+	// compute the corrected weight required to balance the tower.
+	// Build frequency map of total weights of p's children.
+	counts := make(map[int]int)
+	byWeight := make(map[int][]string)
+	for name := range p.Disks {
+		w := programs[name].TotalWeight()
+		counts[w]++
+		byWeight[w] = append(byWeight[w], name)
+	}
+	if len(counts) <= 1 {
+		// Already balanced; nothing to fix
+		return 0, fmt.Errorf("no imbalance detected at deepest level")
+	}
+	// Find the desired total (the one with max count) and the outlier total (count==1)
+	var desiredTotal, outlierTotal int
+	for w, c := range counts {
+		if c == 1 {
+			outlierTotal = w
+		} else {
+			desiredTotal = w
 		}
-
-		// find highest unbalanced program bottom up
-
-		bottom := func() program {
-			for i := range programs {
-				if programs[i].Level == 0 {
-					return programs[i]
-				}
-			}
-			panic("cannot find bottom program")
-		}
-		// list of unbalanced disks
-		unbalanced := func(p program) []program {
-			var ps []program
-			for s := range p.Disks {
-				p2 := programs[s]
-				if !balanced(p2) {
-					ps = append(ps, p2)
-				}
-			}
-			return ps
-		}
-		p := bottom()
-		for {
-			ps := unbalanced(p)
-			if len(ps) == 0 {
-				// reached the node that is unbalanced, but its disk is balanced
-				break
-			}
-			if len(ps) != 1 {
-				s := fmt.Sprintf("expecting exactly 1 unbalanced disk but got %d", len(ps))
-				panic(s)
-			}
-		}
-	*/
-	return 0, fmt.Errorf("missing implementation")
+	}
+	// There should be exactly one outlier
+	if len(byWeight[outlierTotal]) != 1 {
+		return 0, fmt.Errorf("expected exactly one outlier, got %d", len(byWeight[outlierTotal]))
+	}
+	culpritName := byWeight[outlierTotal][0]
+	culprit := programs[culpritName]
+	// Adjust culprit's own weight by the delta between desired and current total
+	delta := desiredTotal - outlierTotal
+	corrected := culprit.Weight + delta
+	if corrected < 0 {
+		return 0, fmt.Errorf("computed negative corrected weight")
+	}
+	return uint(corrected), nil
 }
