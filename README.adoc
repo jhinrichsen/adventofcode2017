@@ -4,8 +4,8 @@
 
 image:https://godoc.org/gitlab.com/jhinrichsen/adventofcode2017?status.svg["godoc", link="https://godoc.org/gitlab.com/jhinrichsen/adventofcode2017"]
 image:https://goreportcard.com/badge/gitlab.com/jhinrichsen/adventofcode2017["Go report card", link="https://goreportcard.com/report/gitlab.com/jhinrichsen/adventofcode2017"]
-image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/main/pipeline.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="pipeline status"]
-image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/main/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="coverage report"]
+image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/master/pipeline.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="pipeline status"]
+image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/master/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="coverage report"]
 
 == Day 3, part 2
 
