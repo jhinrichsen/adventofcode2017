@@ -96,7 +96,7 @@ func TestDay10Reverse(t *testing.T) {
 
 // convert one line of comma separated numeric strings to integers
 func from(filename string) ([]int, error) {
-	buf, err := ioutil.ReadFile("testdata/day10.txt")
+	buf, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
