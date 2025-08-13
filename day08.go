@@ -133,11 +133,12 @@ func parseInstruction(is string) (Instruction, error) {
 		return Instruction{}, fmt.Errorf("%s: want %d fields but got %d", is, want, got)
 	}
 	var col1 bool
-	if fs[1] == "inc" {
+	switch fs[1] {
+	case "inc":
 		col1 = true
-	} else if fs[1] == "dec" {
+	case "dec":
 		col1 = false
-	} else {
+	default:
 		return i, fmt.Errorf("want 'inc' or 'dec' but got %s", fs[1])
 	}
 
