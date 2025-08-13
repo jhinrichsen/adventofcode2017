@@ -6,38 +6,38 @@ import (
 	"testing"
 )
 
-func TestDay7Part1Example(t *testing.T) {
+func TestDay07Part1Example(t *testing.T) {
 	const want = "tknk"
 	ss, err := linesFromFilename(exampleFilename(7))
 	if err != nil {
 		t.Fatal(err)
 	}
-	got := Day7Part1(ss)
+	got := Day07Part1(ss)
 	if want != got {
 		t.Fatalf("want %v but got %v\n", want, got)
 	}
 }
 
-func TestDay7Part1(t *testing.T) {
+func TestDay07Part1(t *testing.T) {
 	const want = "veboyvy"
 	ss, err := linesFromFilename(filename(7))
 	if err != nil {
 		t.Fatal(err)
 	}
-	got := Day7Part1(ss)
+	got := Day07Part1(ss)
 	if want != got {
 		t.Fatalf("want %v but got %v\n", want, got)
 	}
 }
 
-func BenchmarkDay7(b *testing.B) {
+func BenchmarkDay07(b *testing.B) {
 	ss, err := linesFromFilename(filename(7))
 	if err != nil {
 		b.Fatal(err)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Day7Part1(ss)
+		Day07Part1(ss)
 	}
 }
 
@@ -77,13 +77,13 @@ func TestNewProgramDisk(t *testing.T) {
 	}
 }
 
-func TestDay7Part2Example(t *testing.T) {
+func TestDay07Part2Example(t *testing.T) {
 	const want = 60
 	ss, err := linesFromFilename(exampleFilename(7))
 	if err != nil {
 		t.Fatal(err)
 	}
-	got, err := Day7Part2(ss)
+	got, err := Day07Part2(ss)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,13 +92,13 @@ func TestDay7Part2Example(t *testing.T) {
 	}
 }
 
-func TestDay7Part2(t *testing.T) {
+func TestDay07Part2(t *testing.T) {
 	const want = 17561 // too high
 	ss, err := linesFromFilename(filename(7))
 	if err != nil {
 		t.Fatal(err)
 	}
-	got, err := Day7Part2(ss)
+	got, err := Day07Part2(ss)
 	if err != nil {
 		t.Fatal(err)
 	}

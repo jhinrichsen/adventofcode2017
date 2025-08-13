@@ -7,21 +7,21 @@ package adventofcode2017
 
 type Banks [16]int
 
-// Day6Part1 returns number of redistribution cycles.
-func Day6Part1(banks Banks, activeBanks int) int {
-	_, cycles := Day6(banks, activeBanks)
-	return cycles
+// Day06Part1 returns number of redistribution cycles.
+func Day06Part1(banks Banks, activeBanks int) int {
+    _, cycles := Day06(banks, activeBanks)
+    return cycles
 }
 
-// Day6Part2 returns number of redistribution cycles for a configuration already
+// Day06Part2 returns number of redistribution cycles for a configuration already
 // seen.
-func Day6Part2(banks Banks, activeBanks int) int {
-	bs, _ := Day6(banks, activeBanks)
-	_, cycles := Day6(bs, activeBanks)
-	return cycles - 1
+func Day06Part2(banks Banks, activeBanks int) int {
+    bs, _ := Day06(banks, activeBanks)
+    _, cycles := Day06(bs, activeBanks)
+    return cycles - 1
 }
 
-func Day6(banks Banks, activeBanks int) (Banks, int) {
+func Day06(banks Banks, activeBanks int) (Banks, int) {
 	// return index and value of max bank
 	max := func() (int, int) {
 		idx := 0

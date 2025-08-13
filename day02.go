@@ -1,8 +1,8 @@
 package adventofcode2017
 
-// Day2Part1 calculates the spreadsheet's checksum for smallest and largest
+// Day02Part1 calculates the spreadsheet's checksum for smallest and largest
 // cells.
-func Day2Part1(spreadsheet [][]int) (sum uint) {
+func Day02Part1(spreadsheet [][]int) (sum uint) {
 	for _, row := range spreadsheet {
 		min, max := row[0], row[0]
 		for _, cell := range row[1:] {
@@ -18,8 +18,8 @@ func Day2Part1(spreadsheet [][]int) (sum uint) {
 	return
 }
 
-// Day2Part2 calculates checksum for evenly divisible cells.
-func Day2Part2(spreadsheet [][]int) (sum uint) {
+// Day02Part2 calculates checksum for evenly divisible cells.
+func Day02Part2(spreadsheet [][]int) (sum uint) {
 	// return divisor if evenly divisible or 0
 	div := func(a, b int) uint {
 		if a < b {

@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-// Day4 returns the number of valid pass phrases.
+// Day04 returns the number of valid pass phrases.
 // valid := contains no duplicate words, separated by space
-func Day4Part1(passphrases []string) (count uint) {
+func Day04Part1(passphrases []string) (count uint) {
 outer:
 	for _, p := range passphrases {
 		var words = make(map[string]bool)
@@ -22,13 +22,13 @@ outer:
 	return
 }
 
-func Day4Part2Valid(passphrase string) bool {
+func Day04Part2Valid(passphrase string) bool {
 	parts := strings.Fields(passphrase)
 	var ms []map[rune]uint
 	for _, part := range parts {
 		m := make(map[rune]uint)
 		for _, c := range part {
-			// don't consider just occurences per se, the number
+			// don't consider just occurrences per se, the number
 			// must match
 			m[c] = m[c] + 1
 		}
@@ -44,9 +44,9 @@ func Day4Part2Valid(passphrase string) bool {
 	}
 	return true
 }
-func Day4Part2(passphrases []string) (count uint) {
+func Day04Part2(passphrases []string) (count uint) {
 	for i := range passphrases {
-		if Day4Part2Valid(passphrases[i]) {
+		if Day04Part2Valid(passphrases[i]) {
 			count++
 		}
 	}

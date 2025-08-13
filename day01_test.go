@@ -7,19 +7,19 @@ import (
 	"testing"
 )
 
-func TestDay1Part1(t *testing.T) {
+func TestDay01Part1(t *testing.T) {
 	const want = 1029
 	in, err := input()
 	if err != nil {
 		t.Fatal(err)
 	}
-	got := Day1Part1(in)
+	got := Day01Part1(in)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)
 	}
 }
 
-func TestDay1SamplePart1(t *testing.T) {
+func TestDay01SamplePart1(t *testing.T) {
 	var ts = []struct {
 		want uint
 		in   []byte
@@ -30,7 +30,7 @@ func TestDay1SamplePart1(t *testing.T) {
 		{9, []byte{9, 1, 2, 1, 2, 1, 2, 9}},
 	}
 	for _, tt := range ts {
-		got := Day1Part1(tt.in)
+		got := Day01Part1(tt.in)
 		if tt.want != got {
 			t.Fatalf("want %d but got %d\n", tt.want, got)
 		}
@@ -54,19 +54,19 @@ func input() ([]byte, error) {
 	return buf, nil
 }
 
-func BenchmarkDay1Part1(b *testing.B) {
+func BenchmarkDay01Part1(b *testing.B) {
 	in, err := input()
 	if err != nil {
 		b.Fatal(err)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Day1Part1(in)
+		Day01Part1(in)
 	}
 }
 
 // TestDay2SamplePart2 tests day 1, part 2.
-func TestDay1SamplePart2(t *testing.T) {
+func TestDay01SamplePart2(t *testing.T) {
 	var ts = []struct {
 		want uint
 		in   []byte
@@ -78,20 +78,20 @@ func TestDay1SamplePart2(t *testing.T) {
 		{4, []byte{1, 2, 1, 3, 1, 4, 1, 5}},
 	}
 	for _, tt := range ts {
-		got := Day1Part2(tt.in)
+		got := Day01Part2(tt.in)
 		if tt.want != got {
 			t.Fatalf("want %d but got %d\n", tt.want, got)
 		}
 	}
 }
 
-func TestDay1Part2(t *testing.T) {
+func TestDay01Part2(t *testing.T) {
 	const want = 1220
 	in, err := input()
 	if err != nil {
 		t.Fatal(err)
 	}
-	got := Day1Part2(in)
+	got := Day01Part2(in)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)
 	}

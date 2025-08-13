@@ -20,7 +20,7 @@ type DistanceTestdata struct {
 
 func TestDay03(t *testing.T) {
 	want := 371
-	got := Day3Part1(day3Input)
+	got := Day03Part1(day3Input)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)
 	}
@@ -37,7 +37,7 @@ func TestDay03Examples(t *testing.T) {
 	for _, pair := range testdata {
 		square := pair[0]
 		want := pair[1]
-		got := Day3Part1(square)
+		got := Day03Part1(square)
 		if want != got {
 			t.Fatalf("square %d: want %d but got %d\n",
 				square, want, got)
@@ -79,21 +79,21 @@ func TestDay03A174344(t *testing.T) {
 	}
 }
 
-func BenchmarkDay3Part1(b *testing.B) {
+func BenchmarkDay03Part1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Day3Part1(day3Input)
+		Day03Part1(day3Input)
 	}
 }
 
-func TestDay3Part2(t *testing.T) {
+func TestDay03Part2(t *testing.T) {
 	const want = 369601
-	got := Day3Part2(day3Input)
+	got := Day03Part2(day3Input)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)
 	}
 }
-func BenchmarkDay3Part2(b *testing.B) {
+func BenchmarkDay03Part2(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Day3Part2(day3Input)
+		Day03Part2(day3Input)
 	}
 }

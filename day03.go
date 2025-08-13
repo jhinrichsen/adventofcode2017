@@ -59,11 +59,11 @@ func ty(n int) int {
 	return transform(n, math.Cos, false)
 }
 
-// Day3Part1 returns the number of steps for a given square.
+// Day03Part1 returns the number of steps for a given square.
 // A recursive implementation is used that produces a stack overflow for values
 // around 1e8. The recursive call can be replaced by a loop based impl using
 // delta() only.
-func Day3Part1(square int) int {
+func Day03Part1(square int) int {
 	x, y := tx(square), ty(square)
 	// Steps are x + y coordinates, ignoring any sign indicating up/down
 	// resp. left/right
@@ -73,8 +73,8 @@ func Day3Part1(square int) int {
 	return steps
 }
 
-// Day3Part2 returns the first number larger than n of https://oeis.org/A141481.
-func Day3Part2(n uint) uint {
+// Day03Part2 returns the first number larger than n of https://oeis.org/A141481.
+func Day03Part2(n uint) uint {
 	for _, val := range A141481 {
 		if val > n {
 			return val
