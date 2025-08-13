@@ -2,7 +2,6 @@ package adventofcode2017
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -114,9 +113,6 @@ func Day7Part2(ss []string) (uint, error) {
 		if p.Level > maxLevel {
 			maxLevel = p.Level
 		}
-		if p.Level == 1 {
-			log.Printf("%q is level %d\n", p.Name, p.Level)
-		}
 	}
 
 	// calculate disk weights top down
@@ -165,71 +161,16 @@ func Day7Part2(ss []string) (uint, error) {
 		return ps
 	}
 	p := bottom()
-	log.Printf("found bottom node %q", p.Name)
-	previous := p
 	for {
 		ps := unbalanced(p)
 		if len(ps) == 0 {
-			// reached the node that is unbalanced, but its disk is
-			// balanced
+			// reached the node that is unbalanced, but its disk is balanced
 			break
 		}
 		if len(ps) != 1 {
-			s := fmt.Sprintf("expecting exactly 1 unbalanced disk but got %d",
-				len(ps))
+			s := fmt.Sprintf("expecting exactly 1 unbalanced disk but got %d", len(ps))
 			panic(s)
 		}
-		previous = p
-		p = ps[0]
-		log.Printf("going up to unbalanced tower %v", p)
 	}
-	log.Printf("highest balanced disk: %q", p.Name)
-	log.Printf("previous: %v", previous)
-	log.Printf("unbalanced(%v): %v", previous, unbalanced(previous))
-	return 0, nil
+	return 0, fmt.Errorf("missing implementation")
 }
-
-/*
-	prospects := make(map[string]bool) // programs in this level
-	weights := make(map[int]int)       // weight -> n
-	weight := p.TotalWeight()
-	weights[weight]++
-	prospects[p.Name] = true
-	fmt.Printf("%q weighs %d (%d+%d)\n",
-		p.Name, weight, p.Weight, p.DiskWeight)
-	fmt.Printf("balanced: %v, disk weights: ", balanced(p))
-	for name := range p.Disks {
-		fmt.Printf("%d ", programs[name].TotalWeight())
-	}
-	fmt.Printf("\n")
-	if len(weights) == 1 { // balanced
-		continue
-	}
-	if len(weights) != 2 {
-		e := fmt.Errorf("want 2 different weights but got %d",
-			len(weights))
-		return 0, e
-	}
-
-	// find the one anomaly
-	var standardWeight, anomalyWeight int
-	for weight, n := range weights {
-		if n == 1 {
-			anomalyWeight = weight
-		} else {
-			standardWeight = weight
-		}
-	}
-	delta := standardWeight - anomalyWeight
-	log.Printf("standard = %d, anomaly = %d, delta = %d",
-		standardWeight, anomalyWeight, delta)
-
-	// back track from weight to program
-	for name := range prospects {
-		p := programs[name]
-		if p.Weight+p.DiskWeight == anomalyWeight {
-			return uint(p.Weight + delta), nil
-		}
-	}
-	panic("internal state is fubar")
-*/
