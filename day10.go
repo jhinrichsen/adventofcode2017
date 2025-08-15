@@ -2,46 +2,70 @@ package adventofcode2017
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 var ErrorDay10Length = fmt.Errorf("illegal length")
 
-func Day10(list []int, lengths []int) int {
-	day10Hash(list, lengths)
-	return list[0] * list[1]
+// day10Puzzle holds parsed input and configuration for the solver.
+// Tests can modify Size/ZeroBased to match example semantics.
+type day10Puzzle struct {
+	lengths []int
+	size    int
+	zero    bool
 }
 
-func day10Hash(list []int, lengths []int) {
-}
-
-// spec states "Lengths larger than the size of the list are invalid." which is
-// a bit unclear as to wether this can occur in input or not. We opt for the
-// safe side which makes it a precondition.
-// Day10PreconditionLength checks if all length parameters are in list bounds.
-// Returns a list of illegal length indices.
-func Day10PreconditionLength(list []int, lengths []int) ([]int, error) {
-	errors := []int{}
-	for i := 0; i < len(lengths); i++ {
-		if lengths[i] > len(list) {
-			errors = append(errors, i)
+// NewDay10 parses the comma-separated input lengths and returns them.
+// It does not solve the puzzle; call Day10 with an appropriate list and the returned lengths.
+func NewDay10(buf []byte) day10Puzzle {
+	s := strings.TrimSpace(string(buf))
+	var lengths []int
+	if s != "" {
+		parts := strings.Split(s, ",")
+		lengths = make([]int, 0, len(parts))
+		for i := 0; i < len(parts); i++ {
+			n, err := strconv.Atoi(strings.TrimSpace(parts[i]))
+			if err != nil {
+				panic(fmt.Errorf("cannot convert number to int at column %d", i))
+			}
+			lengths = append(lengths, n)
 		}
 	}
-	if len(errors) > 0 {
-		return errors, ErrorDay10Length
-	}
-	return nil, nil
+	// Defaults: AoC standard configuration (0..255 list)
+	return day10Puzzle{lengths: lengths, size: 256, zero: true}
 }
 
-// Day10Reverse in-place reverse slice list[idx:idx+n], wrapping n if n > len(list)
-func Day10Reverse(list []int, idx int, n int) {
-	wrap := func(i int) int {
-		return i % len(list)
+// Day10 is the solver. It constructs the working list according to the puzzle
+// configuration and runs one knot-hash round, returning the product of the
+// first two elements.
+func Day10(p day10Puzzle) int {
+	size := p.size
+	if size <= 0 {
+		size = 256
 	}
-	swap := func(x, y int) {
-		list[wrap(x)], list[wrap(y)] = list[wrap(y)], list[wrap(x)]
+	list := make([]int, size)
+	for i := 0; i < size; i++ {
+		if p.zero {
+			list[i] = i
+		} else {
+			list[i] = i + 1
+		}
 	}
-	for lower, upper := idx, idx+n-1; lower < upper; lower, upper = lower+1, upper-1 {
-		swap(lower, upper)
+	// Inline the knot hash single round
+	pos := 0
+	skip := 0
+	for i := 0; i < len(p.lengths); i++ {
+		n := p.lengths[i]
+		if n > 0 {
+			// reverse list[pos:pos+n] with wraparound
+			wrap := func(x int) int { return x % len(list) }
+			for lower, upper := pos, pos+n-1; lower < upper; lower, upper = lower+1, upper-1 {
+				list[wrap(lower)], list[wrap(upper)] = list[wrap(upper)], list[wrap(lower)]
+			}
+		}
+		pos = (pos + n + skip) % len(list)
+		skip++
 	}
-
+	return list[0] * list[1]
 }

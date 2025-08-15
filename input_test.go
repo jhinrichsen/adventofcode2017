@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strconv"
 	"testing"
 )
 
@@ -38,41 +37,6 @@ func exampleFilename(day uint8) string {
 
 func filename(day uint8) string {
 	return fmt.Sprintf("testdata/day%02d.txt", int(day))
-}
-
-// example1Filename returns the filename for day NN example 1
-func example1Filename(day uint8) string {
-	return fmt.Sprintf("testdata/day%02d_example1.txt", int(day))
-}
-
-// example2Filename returns the filename for day NN example 2
-func example2Filename(day uint8) string {
-	return fmt.Sprintf("testdata/day%02d_example2.txt", int(day))
-}
-
-// example3Filename returns the filename for day NN example 3
-func example3Filename(day uint8) string {
-	return fmt.Sprintf("testdata/day%02d_example3.txt", int(day))
-}
-
-// linesAsNumber converts strings into integer.
-func linesAsNumbers(tb testing.TB, lines []string) []int {
-	tb.Helper()
-	var is []int
-	for i := range lines {
-		n, err := strconv.Atoi(lines[i])
-		if err != nil {
-			tb.Fatalf("error in line %d: cannot convert %q to number", i, lines[i])
-		}
-		is = append(is, n)
-	}
-	return is
-}
-
-func numbersFromFilename(tb testing.TB, filename string) []int {
-	tb.Helper()
-	ls := linesFromFilename(tb, filename)
-	return linesAsNumbers(tb, ls)
 }
 
 // file reads the main input file bytes for day N (zero-padded).
