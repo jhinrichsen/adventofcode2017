@@ -37,7 +37,7 @@ Number of tries for a correct answer:
 | 7   |   1    |   1
 | 8   |   1    |   1
 | 9   |   1    |   1
-| 10  |   2    |
+| 10  |   2    |   1
 | 11  |   1    |   1
 | 12  |   1    |
 | 13  |        |
