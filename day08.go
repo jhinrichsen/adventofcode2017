@@ -42,16 +42,6 @@ const (
 
 type Registers map[string]int
 
-func (a Registers) Max() int {
-	n := math.MinInt32
-	for _, value := range a {
-		if value > n {
-			n = value
-		}
-	}
-	return n
-}
-
 func (a Registers) True(c Condition) bool {
 	var b bool
 	val := a[c.reg]
@@ -88,7 +78,7 @@ func (a Registers) Step(i Instruction) {
 	}
 }
 
-func Day08(data []byte) (int, error) {
+func Day08Part1(data []byte) (int, error) {
 	registers := Registers{}
 	is, err := instructions(data)
 	if err != nil {
@@ -97,7 +87,29 @@ func Day08(data []byte) (int, error) {
 	for _, i := range is {
 		registers.Step(i)
 	}
-	return registers.Max(), nil
+	maxVal := math.MinInt
+	for _, v := range registers {
+		maxVal = max(maxVal, v)
+	}
+	return maxVal, nil
+}
+
+// Day08Part2 returns the highest value held in any register at any time
+// during processing of the instructions.
+func Day08Part2(data []byte) (int, error) {
+	registers := Registers{}
+	is, err := instructions(data)
+	if err != nil {
+		return -1, err
+	}
+	maxVal := math.MinInt
+	for _, ins := range is {
+		if registers.True(ins.Condition) {
+			registers.Apply(ins.Operation)
+			maxVal = max(maxVal, registers[ins.Operation.RA.reg])
+		}
+	}
+	return maxVal, nil
 }
 
 func instructions(data []byte) ([]Instruction, error) {
