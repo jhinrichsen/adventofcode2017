@@ -20,7 +20,7 @@ import (
 // TestDay00Part1Example tests all examples given in the puzzle description.
 // Getting the solution to the puzzle right in the first shot is the number one priority in this project.
 // Implementations MUST test all given examples 100%.
-// Implementations MUST include the original quotes from the website for testcases ("(()) and ()() both result in floor 0").
+// Implementations MUST include an abbreviated, original quote from the website for each example ("[…], so nirvana is 42").
 // Implementations SHOULD use table tests for multiple inputs.
 // Implementations SHOULD create external files instead of hardcoded (multiline) strings to avoid parser errors for real puzzle inputs.
 // Implementations CAN use the provided functions `example{{N}}Filename()` to read example input from `testdata/day00_example{{N}}.txt`).
