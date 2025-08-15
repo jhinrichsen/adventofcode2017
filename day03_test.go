@@ -80,7 +80,7 @@ func TestDay03A174344(t *testing.T) {
 }
 
 func BenchmarkDay03Part1(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		Day03Part1(day3Input)
 	}
 }
@@ -93,7 +93,7 @@ func TestDay03Part2(t *testing.T) {
 	}
 }
 func BenchmarkDay03Part2(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		Day03Part2(day3Input)
 	}
 }

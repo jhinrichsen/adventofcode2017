@@ -2,6 +2,7 @@ package adventofcode2017
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"strconv"
@@ -56,7 +57,7 @@ func asSparseArray(filename string) ([]int, error) {
 	return layers, nil
 }
 func TestDay13UsingSparseArray(t *testing.T) {
-	layers, err := asSparseArray("testdata/day13_sample.txt")
+	layers, err := asSparseArray(exampleFilename(13))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -70,13 +71,28 @@ func TestDay13UsingSparseArray(t *testing.T) {
 	}
 }
 
-func BenchmarkDay13UsingSparseArray(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		layers, err := asSparseArray("testdata/day13_sample.txt")
-		if err != nil {
-			b.Fatal(err)
+func BenchmarkDay13Part1SparseArray(b *testing.B) {
+	buf := exampleFile(b, 13)
+	b.ResetTimer()
+	for b.Loop() {
+		var m = make(map[int]int)
+		var maxDepth int
+		sc := bufio.NewScanner(bytes.NewReader(buf))
+		for sc.Scan() {
+			line := sc.Text()
+			parts := strings.Split(line, ": ")
+			k, _ := strconv.Atoi(parts[0])
+			v, _ := strconv.Atoi(parts[1])
+			m[k] = v
+			if maxDepth < k {
+				maxDepth = k
+			}
 		}
-		Day13UsingSparseArray(layers)
+		layers := make([]int, maxDepth+1)
+		for k, v := range m {
+			layers[k] = v
+		}
+		_ = Day13UsingSparseArray(layers)
 	}
 }
 
@@ -102,7 +118,7 @@ func asList(filename string) (*node, error) {
 }
 
 func TestDay13UsingList(t *testing.T) {
-	l, err := asList("testdata/day13_sample.txt")
+	l, err := asList(exampleFilename(13))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,18 +129,32 @@ func TestDay13UsingList(t *testing.T) {
 	}
 }
 
-func BenchmarkDay13UsingList(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		l, err := asList("testdata/day13_sample.txt")
-		if err != nil {
-			b.Fatal(err)
+func BenchmarkDay13Part1List(b *testing.B) {
+	buf := exampleFile(b, 13)
+	b.ResetTimer()
+	for b.Loop() {
+		var head, prev *node
+		sc := bufio.NewScanner(bytes.NewReader(buf))
+		for sc.Scan() {
+			line := sc.Text()
+			parts := strings.Split(line, ": ")
+			k, _ := strconv.Atoi(parts[0])
+			v, _ := strconv.Atoi(parts[1])
+			l := &node{Depth: k, Range: v}
+			if head == nil {
+				head = l
+			}
+			if prev != nil {
+				prev.Next = l
+			}
+			prev = l
 		}
-		Day13UsingList(l)
+		_ = Day13UsingList(head)
 	}
 }
 
-func TestDay13Sample(t *testing.T) {
-	filename := "testdata/day13_sample.txt"
+func TestDay13Part1Example(t *testing.T) {
+	filename := exampleFilename(13)
 	layers, err := asSparseArray(filename)
 	if err != nil {
 		t.Fatal(err)
@@ -142,8 +172,8 @@ func TestDay13Sample(t *testing.T) {
 	}
 }
 
-func TestDay13(t *testing.T) {
-	filename := "testdata/day13.txt"
+func TestDay13Part1(t *testing.T) {
+	filename := filename(13)
 	layers, err := asSparseArray(filename)
 	if err != nil {
 		t.Fatal(err)

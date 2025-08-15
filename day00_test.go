@@ -27,10 +27,7 @@ import (
 // Implementations CAN skip parsing from external files if the solver (`Day00()`) uses []byte for maximum performance.
 func TestDay00Part1Example(t *testing.T) {
 	const want = 0
-	lines, err := linesFromFilename(exampleFilename(0))
-	if err != nil {
-		t.Fatal(err)
-	}
+	lines := linesFromFilename(t, exampleFilename(0))
 	p, err := NewPuzzle(lines)
 	if err != nil {
 		t.Fatal(err)
@@ -46,10 +43,7 @@ func TestDay00Part1Example(t *testing.T) {
 
 func TestDay00Part1(t *testing.T) {
 	const want = 0
-	lines, err := linesFromFilename(filename(0))
-	if err != nil {
-		t.Fatal(err)
-	}
+	lines := linesFromFilename(t, filename(0))
 	p, err := NewPuzzle(lines)
 	if err != nil {
 		t.Fatal(err)
@@ -67,26 +61,17 @@ func TestDay00Part1(t *testing.T) {
 // Benchmarks MUST NOT include measuring file I/O (reading the file from disk into memory).
 // Benchmarks MUST include parsing the puzzle input.
 func BenchmarkDay00Part1(b *testing.B) {
-	lines, err := linesFromFilename(filename(0))
-	if err != nil {
-		b.Fatal(err)
-	}
-	b.ResetTimer()
-	for range b.N {
-		p, err := NewPuzzle(lines)
-		if err != nil {
-			b.Fatal(err)
-		}
-		_, _ = Day00(p, true)
-	}
+    lines := linesFromFilename(b, filename(0))
+    b.ResetTimer()
+    for b.Loop() {
+        p, _ := NewPuzzle(lines)
+        _, _ = Day00(p, true)
+    }
 }
 
 func TestDay00Part2Example(t *testing.T) {
 	const want = 0
-	lines, err := linesFromFilename(exampleFilename(0))
-	if err != nil {
-		t.Fatal(err)
-	}
+	lines := linesFromFilename(t, exampleFilename(0))
 	p, err := NewPuzzle(lines)
 	if err != nil {
 		t.Fatal(err)
@@ -102,10 +87,7 @@ func TestDay00Part2Example(t *testing.T) {
 
 func TestDay00Part2(t *testing.T) {
 	const want = 0
-	lines, err := linesFromFilename(filename(0))
-	if err != nil {
-		t.Fatal(err)
-	}
+	lines := linesFromFilename(t, filename(0))
 	p, err := NewPuzzle(lines)
 	if err != nil {
 		t.Fatal(err)
@@ -120,16 +102,10 @@ func TestDay00Part2(t *testing.T) {
 }
 
 func BenchmarkDay00Part2(b *testing.B) {
-	lines, err := linesFromFilename(filename(0))
-	if err != nil {
-		b.Fatal(err)
-	}
-	b.ResetTimer()
-	for range b.N {
-		p, err := NewPuzzle(lines)
-		if err != nil {
-			b.Fatal(err)
-		}
-		_, _ = Day00(p, false)
-	}
+    lines := linesFromFilename(b, filename(0))
+    b.ResetTimer()
+    for b.Loop() {
+        p, _ := NewPuzzle(lines)
+        _, _ = Day00(p, false)
+    }
 }

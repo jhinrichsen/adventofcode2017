@@ -21,7 +21,7 @@ func TestDay02Part1(t *testing.T) {
 	}
 }
 
-func TestDay02Sample(t *testing.T) {
+func TestDay02Part1ExampleInline(t *testing.T) {
 	const want = 18
 	spreadsheet := [][]int{
 		{5, 1, 9, 5},
@@ -59,7 +59,7 @@ func inputDay02(filename string) ([][]int, error) {
 	return iss, nil
 }
 
-func TestDay02SampleInput(t *testing.T) {
+func TestDay02Part1Example(t *testing.T) {
 	const want = 18
 	in, err := inputDay02(exampleFilename(2))
 	if err != nil {
@@ -71,14 +71,19 @@ func TestDay02SampleInput(t *testing.T) {
 	}
 }
 
-func BenchmarkDay02(b *testing.B) {
-	in, err := inputDay02("testdata/day2.txt")
-	if err != nil {
-		b.Fatal(err)
-	}
+func BenchmarkDay02Part1(b *testing.B) {
+	in, _ := inputDay02(filename(2))
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		Day02Part1(in)
+	}
+}
+
+func BenchmarkDay02Part2(b *testing.B) {
+	in, _ := inputDay02(filename(2))
+	b.ResetTimer()
+	for b.Loop() {
+		Day02Part2(in)
 	}
 }
 

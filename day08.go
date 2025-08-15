@@ -2,9 +2,8 @@ package adventofcode2017
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
-	"io"
-	"log"
 	"math"
 	"strconv"
 	"strings"
@@ -42,12 +41,6 @@ const (
 )
 
 type Registers map[string]int
-
-func (a Registers) Dump() {
-	for key, value := range a {
-		log.Printf("\tregister %s=%d\n", key, value)
-	}
-}
 
 func (a Registers) Max() int {
 	n := math.MinInt32
@@ -93,12 +86,11 @@ func (a Registers) Step(i Instruction) {
 	if a.True(i.Condition) {
 		a.Apply(i.Operation)
 	}
-	// a.Dump()
 }
 
-func Day08(r io.Reader) (int, error) {
+func Day08(data []byte) (int, error) {
 	registers := Registers{}
-	is, err := instructions(r)
+	is, err := instructions(data)
 	if err != nil {
 		return -1, err
 	}
@@ -108,9 +100,9 @@ func Day08(r io.Reader) (int, error) {
 	return registers.Max(), nil
 }
 
-func instructions(r io.Reader) ([]Instruction, error) {
+func instructions(data []byte) ([]Instruction, error) {
 	var is []Instruction
-	sc := bufio.NewScanner(r)
+	sc := bufio.NewScanner(bytes.NewReader(data))
 	lineN := 0
 	for sc.Scan() {
 		lineN++

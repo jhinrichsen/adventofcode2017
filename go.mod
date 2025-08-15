@@ -1,3 +1,3 @@
 module gitlab.com/jhinrichsen/adventofcode2017
 
-go 1.16
+go 1.24

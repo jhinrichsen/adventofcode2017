@@ -4,19 +4,16 @@ import (
 	"testing"
 )
 
-func TestDay04(t *testing.T) {
+func TestDay04Part1(t *testing.T) {
 	const want = 451
-	ss, err := linesFromFilename(filename(4))
-	if err != nil {
-		t.Fatal(err)
-	}
+	ss := linesFromFilename(t, filename(4))
 	got := Day04Part1(ss)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)
 	}
 }
 
-func TestDay04Part1Examples(t *testing.T) {
+func TestDay04Part1Example(t *testing.T) {
 	const want = 2
 	passphrases := []string{
 		"aa bb cc dd ee",
@@ -29,7 +26,7 @@ func TestDay04Part1Examples(t *testing.T) {
 	}
 }
 
-func TestDay04Part2Examples(t *testing.T) {
+func TestDay04Part2Example(t *testing.T) {
 	var tests = []struct {
 		passphrase string
 		valid      bool
@@ -53,12 +50,25 @@ func TestDay04Part2Examples(t *testing.T) {
 
 func TestDay04Part2(t *testing.T) {
 	const want = 223
-	ss, err := linesFromFilename(filename(4))
-	if err != nil {
-		t.Fatal(err)
-	}
+	ss := linesFromFilename(t, filename(4))
 	got := Day04Part2(ss)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)
+	}
+}
+
+func BenchmarkDay04Part1(b *testing.B) {
+	ss := linesFromFilename(b, filename(4))
+	b.ResetTimer()
+	for b.Loop() {
+		Day04Part1(ss)
+	}
+}
+
+func BenchmarkDay04Part2(b *testing.B) {
+	ss := linesFromFilename(b, filename(4))
+	b.ResetTimer()
+	for b.Loop() {
+		Day04Part2(ss)
 	}
 }

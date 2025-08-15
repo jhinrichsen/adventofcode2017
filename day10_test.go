@@ -4,17 +4,38 @@ package adventofcode2017
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
 )
 
-func ExampleDay10() {
+func TestDay10Part1(t *testing.T) {
+	const want = 2
 	l := Day10Input()
-	lengths, _ := from("testdata/day10.txt")
-	fmt.Println(Day10(l, lengths))
-	// Output: 2
+	lengths, _ := from(filename(10))
+	got := Day10(l, lengths)
+	if want != got {
+		t.Fatalf("want %v but got %v", want, got)
+	}
+}
+
+func BenchmarkDay10Part1(b *testing.B) {
+	// Read file once (no disk I/O in loop)
+	buf := file(b, 10)
+	b.ResetTimer()
+	for b.Loop() {
+		// Parse lengths from in-memory buffer each iteration (include parsing cost)
+		var lengths []int
+		parts := strings.Split(strings.TrimSpace(string(buf)), ",")
+		for i := 0; i < len(parts); i++ {
+			n, _ := strconv.Atoi(parts[i])
+			lengths = append(lengths, n)
+		}
+		// Construct list each iteration (as Day10 mutates list)
+		list := Day10Input()
+		_ = Day10(list, lengths)
+	}
 }
 
 func TestDay10Hash(t *testing.T) {
@@ -30,7 +51,7 @@ func TestDay10Hash(t *testing.T) {
 	*/
 }
 
-func TestDay10Sample(t *testing.T) {
+func TestDay10Part1ExampleInline(t *testing.T) {
 	/* TODO
 	want := 12
 	list := []int{0, 1, 2, 3, 4}
@@ -96,7 +117,7 @@ func TestDay10Reverse(t *testing.T) {
 
 // convert one line of comma separated numeric strings to integers
 func from(filename string) ([]int, error) {
-	buf, err := ioutil.ReadFile(filename)
+	buf, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}

@@ -10,10 +10,7 @@ const notSame = "want %v but got %v"
 
 func TestDay07Part1Example(t *testing.T) {
 	const want = "tknk"
-	ss, err := linesFromFilename(exampleFilename(7))
-	if err != nil {
-		t.Fatal(err)
-	}
+	ss := linesFromFilename(t, exampleFilename(7))
 	got := Day07Part1(ss)
 	if want != got {
 		t.Fatalf(notSame, want, got)
@@ -22,23 +19,17 @@ func TestDay07Part1Example(t *testing.T) {
 
 func TestDay07Part1(t *testing.T) {
 	const want = "veboyvy"
-	ss, err := linesFromFilename(filename(7))
-	if err != nil {
-		t.Fatal(err)
-	}
+	ss := linesFromFilename(t, filename(7))
 	got := Day07Part1(ss)
 	if want != got {
 		t.Fatalf(notSame, want, got)
 	}
 }
 
-func BenchmarkDay07(b *testing.B) {
-	ss, err := linesFromFilename(filename(7))
-	if err != nil {
-		b.Fatal(err)
-	}
+func BenchmarkDay07Part1(b *testing.B) {
+	ss := linesFromFilename(b, filename(7))
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		Day07Part1(ss)
 	}
 }
@@ -81,10 +72,7 @@ func TestNewProgramDisk(t *testing.T) {
 
 func TestDay07Part2Example(t *testing.T) {
 	const want = 60
-	ss, err := linesFromFilename(exampleFilename(7))
-	if err != nil {
-		t.Fatal(err)
-	}
+	ss := linesFromFilename(t, exampleFilename(7))
 	got, err := Day07Part2(ss)
 	if err != nil {
 		t.Fatal(err)
@@ -96,15 +84,20 @@ func TestDay07Part2Example(t *testing.T) {
 
 func TestDay07Part2(t *testing.T) {
 	const want = 749
-	ss, err := linesFromFilename(filename(7))
-	if err != nil {
-		t.Fatal(err)
-	}
+	ss := linesFromFilename(t, filename(7))
 	got, err := Day07Part2(ss)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if want != got {
 		t.Fatalf(notSame, want, got)
+	}
+}
+
+func BenchmarkDay07Part2(b *testing.B) {
+	ss := linesFromFilename(b, filename(7))
+	b.ResetTimer()
+	for b.Loop() {
+		_, _ = Day07Part2(ss)
 	}
 }

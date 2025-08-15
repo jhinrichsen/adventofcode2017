@@ -7,27 +7,25 @@ import (
 )
 
 func TestDay06Part1(t *testing.T) {
-	const want = 4074
-	const nBanks = 16
-	ss, err := linesFromFilename(filename(6))
-	if err != nil {
-		t.Fatal(err)
-	}
-	fs := strings.Fields(ss[0])
-	if len(fs) != nBanks {
-		t.Fatalf("want %d fields but got %d", nBanks, len(fs))
-	}
-	var banks Banks
-	for i := 0; i < nBanks; i++ {
-		banks[i], err = strconv.Atoi(fs[i])
-		if err != nil {
-			t.Fatalf("error converting col %d: %v", i, err)
-		}
-	}
-	got := Day06Part1(banks, nBanks)
-	if want != got {
-		t.Fatalf("want %d but got %d", want, got)
-	}
+    const want = 4074
+    const nBanks = 16
+    ss := linesFromFilename(t, filename(6))
+    fs := strings.Fields(ss[0])
+    if len(fs) != nBanks {
+        t.Fatalf("want %d fields but got %d", nBanks, len(fs))
+    }
+    var banks Banks
+    for i := 0; i < nBanks; i++ {
+        n, err := strconv.Atoi(fs[i])
+        if err != nil {
+            t.Fatalf("error converting col %d: %v", i, err)
+        }
+        banks[i] = n
+    }
+    got := Day06Part1(banks, nBanks)
+    if want != got {
+        t.Fatalf("want %d but got %d", want, got)
+    }
 }
 
 func TestDay06Part1Example(t *testing.T) {
@@ -54,9 +52,9 @@ func TestArrayAsKeyInMap(t *testing.T) {
 }
 
 func BenchmarkDay06Part1(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_ = Day06Part1(Banks{0, 2, 7, 0}, 4)
-	}
+    for b.Loop() {
+        _ = Day06Part1(Banks{0, 2, 7, 0}, 4)
+    }
 }
 
 func TestDay06Part2Example(t *testing.T) {
@@ -69,25 +67,38 @@ func TestDay06Part2Example(t *testing.T) {
 }
 
 func TestDay06Part2(t *testing.T) {
-	const want = 2793
-	const nBanks = 16
-	ss, err := linesFromFilename(filename(6))
-	if err != nil {
-		t.Fatal(err)
-	}
-	fs := strings.Fields(ss[0])
-	if len(fs) != nBanks {
-		t.Fatalf("want %d fields but got %d", nBanks, len(fs))
-	}
-	var banks Banks
-	for i := 0; i < nBanks; i++ {
-		banks[i], err = strconv.Atoi(fs[i])
-		if err != nil {
-			t.Fatalf("error converting col %d: %v", i, err)
-		}
-	}
-	got := Day06Part2(banks, nBanks)
-	if want != got {
-		t.Fatalf("want %d but got %d", want, got)
-	}
+    const want = 2793
+    const nBanks = 16
+    ss := linesFromFilename(t, filename(6))
+    fs := strings.Fields(ss[0])
+    if len(fs) != nBanks {
+        t.Fatalf("want %d fields but got %d", nBanks, len(fs))
+    }
+    var banks Banks
+    for i := 0; i < nBanks; i++ {
+        n, err := strconv.Atoi(fs[i])
+        if err != nil {
+            t.Fatalf("error converting col %d: %v", i, err)
+        }
+        banks[i] = n
+    }
+    got := Day06Part2(banks, nBanks)
+    if want != got {
+        t.Fatalf("want %d but got %d", want, got)
+    }
+}
+
+func BenchmarkDay06Part2(b *testing.B) {
+    ss := linesFromFilename(b, filename(6))
+    fs := strings.Fields(ss[0])
+    const nBanks = 16
+    b.ResetTimer()
+    for b.Loop() {
+        var banks Banks
+        for i := 0; i < nBanks; i++ {
+            n, _ := strconv.Atoi(fs[i])
+            banks[i] = n
+        }
+        _ = Day06Part2(banks, nBanks)
+    }
 }

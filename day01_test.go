@@ -1,25 +1,27 @@
 package adventofcode2017
 
 import (
-	"bytes"
-	"fmt"
-	"os"
 	"testing"
 )
 
 func TestDay01Part1(t *testing.T) {
 	const want = 1029
-	in, err := input()
-	if err != nil {
-		t.Fatal(err)
-	}
+	in := file(t, 1)
 	got := Day01Part1(in)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)
 	}
 }
 
-func TestDay01SamplePart1(t *testing.T) {
+func BenchmarkDay01Part2(b *testing.B) {
+    in := file(b, 1)
+    b.ResetTimer()
+    for b.Loop() {
+        Day01Part2(in)
+    }
+}
+
+func TestDay01Part1Example(t *testing.T) {
 	var ts = []struct {
 		want uint
 		in   []byte
@@ -37,36 +39,16 @@ func TestDay01SamplePart1(t *testing.T) {
 	}
 }
 
-func input() ([]byte, error) {
-	buf, err := os.ReadFile("testdata/day1.txt")
-	if err != nil {
-		return nil, err
-	}
-	buf = bytes.TrimSpace(buf)
-
-	// map from '0'..'9' to 0..9
-	for i := range buf {
-		if buf[i] < '0' || buf[i] > '9' {
-			return buf, fmt.Errorf("index %d out of range: %d", i, buf[i])
-		}
-		buf[i] = buf[i] - '0'
-	}
-	return buf, nil
-}
-
 func BenchmarkDay01Part1(b *testing.B) {
-	in, err := input()
-	if err != nil {
-		b.Fatal(err)
-	}
+	in := file(b, 1)
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		Day01Part1(in)
 	}
 }
 
-// TestDay2SamplePart2 tests day 1, part 2.
-func TestDay01SamplePart2(t *testing.T) {
+// TestDay01Part2Example tests day 1, part 2.
+func TestDay01Part2Example(t *testing.T) {
 	var ts = []struct {
 		want uint
 		in   []byte
@@ -87,10 +69,7 @@ func TestDay01SamplePart2(t *testing.T) {
 
 func TestDay01Part2(t *testing.T) {
 	const want = 1220
-	in, err := input()
-	if err != nil {
-		t.Fatal(err)
-	}
+	in := file(t, 1)
 	got := Day01Part2(in)
 	if want != got {
 		t.Fatalf("want %d but got %d", want, got)

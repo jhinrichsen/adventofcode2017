@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -14,6 +15,38 @@ func TestDay05Part1Example(t *testing.T) {
 	if want != got {
 		t.Fatalf("want %d but got %d\n", want, got)
 	}
+}
+
+func BenchmarkDay05Part1(b *testing.B) {
+    // Read file once (no I/O in loop)
+    data := file(b, 5)
+    lines := strings.Split(strings.TrimSpace(string(data)), "\n")
+    b.ResetTimer()
+    for b.Loop() {
+        // Parse in loop (benchmark includes parsing)
+        mz := make([]int, 0, len(lines))
+        for _, s := range lines {
+            if s == "" { continue }
+            n, _ := strconv.Atoi(s)
+            mz = append(mz, n)
+        }
+        _ = Day05Part1(mz)
+    }
+}
+
+func BenchmarkDay05Part2(b *testing.B) {
+    data := file(b, 5)
+    lines := strings.Split(strings.TrimSpace(string(data)), "\n")
+    b.ResetTimer()
+    for b.Loop() {
+        mz := make([]int, 0, len(lines))
+        for _, s := range lines {
+            if s == "" { continue }
+            n, _ := strconv.Atoi(s)
+            mz = append(mz, n)
+        }
+        _ = Day05Part2(mz)
+    }
 }
 
 func TestDay05Part2Example(t *testing.T) {
@@ -42,7 +75,7 @@ func TestDay05Part2(t *testing.T) {
 }
 
 func maze() []int {
-	f, err := os.Open("testdata/day5.txt")
+	f, err := os.Open("testdata/day05.txt")
 	if err != nil {
 		panic(err)
 	}
