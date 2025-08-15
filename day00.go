@@ -18,8 +18,9 @@ type Puzzle struct {
 }
 
 // NewPuzzle parses the puzzle input in text form into an efficient representation for day N.
-// The parser function CAN be left out if the solver (`Day00`) is implemented using []byte for maximum performance.
-// Implementations CAN use puzzle input as []byte instead of []string for best performance.
+// The parser function CAN be left out if the solver (`Day00`) is implemented using puzzle input []byte for maximum performance.
+// Implementations CAN use puzzle input as []byte instead of []string for best performance, or if problem solution is grid based instead of line based..
+// When using []byte input, parser CAN rely on input in format end_of_line = lf, insert_final_newline = true, trim_trailing_whitespace = true.
 // Parser DO NOT HAVE TO cater for malicious input, but use regular error handling e.g. when parsing numbers using strconv.Atoi().
 // Parser MUST NOT suppress or ignore errors.
 func NewPuzzle(lines []string) (Puzzle, error) {
