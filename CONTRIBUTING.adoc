@@ -38,6 +38,7 @@ Implementations MUST aim for maximum performance, and minimal memory allocation.
 Usual and common code conventions (maintainability, readability, DRY, Clean Code e.a.) DO NOT have to be applied.
 Implementations MUST calculate solutions and MUST NOT use pre-calculated results (`return 5347`).
 Implementations MUST NOT look up solutions on the internet.
+Implementations MUST NOT use `panic()`, instead use error handling.
 
 === Implement part 1 examples
 
