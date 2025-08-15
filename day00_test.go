@@ -62,7 +62,6 @@ func TestDay00Part1(t *testing.T) {
 // Benchmarks MUST include parsing the puzzle input.
 func BenchmarkDay00Part1(b *testing.B) {
     lines := linesFromFilename(b, filename(0))
-    b.ResetTimer()
     for b.Loop() {
         p, _ := NewPuzzle(lines)
         _, _ = Day00(p, true)
@@ -103,7 +102,6 @@ func TestDay00Part2(t *testing.T) {
 
 func BenchmarkDay00Part2(b *testing.B) {
     lines := linesFromFilename(b, filename(0))
-    b.ResetTimer()
     for b.Loop() {
         p, _ := NewPuzzle(lines)
         _, _ = Day00(p, false)

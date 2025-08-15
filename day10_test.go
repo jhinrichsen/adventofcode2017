@@ -23,7 +23,6 @@ func TestDay10Part1(t *testing.T) {
 func BenchmarkDay10Part1(b *testing.B) {
 	// Read file once (no disk I/O in loop)
 	buf := file(b, 10)
-	b.ResetTimer()
 	for b.Loop() {
 		// Parse lengths from in-memory buffer each iteration (include parsing cost)
 		var lengths []int

@@ -92,7 +92,6 @@ func BenchmarkDay06Part2(b *testing.B) {
     ss := linesFromFilename(b, filename(6))
     fs := strings.Fields(ss[0])
     const nBanks = 16
-    b.ResetTimer()
     for b.Loop() {
         var banks Banks
         for i := 0; i < nBanks; i++ {

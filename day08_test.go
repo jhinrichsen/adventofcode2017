@@ -30,7 +30,6 @@ func TestDay08Part1(t *testing.T) {
 
 func BenchmarkDay08Part1(b *testing.B) {
 	buf := file(b, 8)
-	b.ResetTimer()
 	for b.Loop() {
 		_, _ = Day08Part1(buf)
 	}
@@ -62,7 +61,6 @@ func TestDay08Part2(t *testing.T) {
 
 func BenchmarkDay08Part2(b *testing.B) {
 	buf := file(b, 8)
-	b.ResetTimer()
 	for b.Loop() {
 		_, _ = Day08Part2(buf)
 	}

@@ -73,7 +73,6 @@ func TestDay13UsingSparseArray(t *testing.T) {
 
 func BenchmarkDay13Part1SparseArray(b *testing.B) {
 	buf := exampleFile(b, 13)
-	b.ResetTimer()
 	for b.Loop() {
 		var m = make(map[int]int)
 		var maxDepth int
@@ -131,7 +130,6 @@ func TestDay13UsingList(t *testing.T) {
 
 func BenchmarkDay13Part1List(b *testing.B) {
 	buf := exampleFile(b, 13)
-	b.ResetTimer()
 	for b.Loop() {
 		var head, prev *node
 		sc := bufio.NewScanner(bytes.NewReader(buf))

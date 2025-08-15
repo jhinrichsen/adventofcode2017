@@ -59,7 +59,6 @@ func TestDay04Part2(t *testing.T) {
 
 func BenchmarkDay04Part1(b *testing.B) {
 	ss := linesFromFilename(b, filename(4))
-	b.ResetTimer()
 	for b.Loop() {
 		Day04Part1(ss)
 	}
@@ -67,7 +66,6 @@ func BenchmarkDay04Part1(b *testing.B) {
 
 func BenchmarkDay04Part2(b *testing.B) {
 	ss := linesFromFilename(b, filename(4))
-	b.ResetTimer()
 	for b.Loop() {
 		Day04Part2(ss)
 	}

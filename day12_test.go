@@ -25,7 +25,6 @@ func TestDay12Part1Example(t *testing.T) {
 
 func BenchmarkDay12Part1(b *testing.B) {
 	buf := file(b, 12)
-	b.ResetTimer()
 	for b.Loop() {
 		Day12(bytes.NewReader(buf))
 	}

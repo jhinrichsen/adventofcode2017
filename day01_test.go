@@ -15,7 +15,6 @@ func TestDay01Part1(t *testing.T) {
 
 func BenchmarkDay01Part2(b *testing.B) {
     in := file(b, 1)
-    b.ResetTimer()
     for b.Loop() {
         Day01Part2(in)
     }
@@ -41,7 +40,6 @@ func TestDay01Part1Example(t *testing.T) {
 
 func BenchmarkDay01Part1(b *testing.B) {
 	in := file(b, 1)
-	b.ResetTimer()
 	for b.Loop() {
 		Day01Part1(in)
 	}

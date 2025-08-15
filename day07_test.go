@@ -28,7 +28,6 @@ func TestDay07Part1(t *testing.T) {
 
 func BenchmarkDay07Part1(b *testing.B) {
 	ss := linesFromFilename(b, filename(7))
-	b.ResetTimer()
 	for b.Loop() {
 		Day07Part1(ss)
 	}
@@ -96,7 +95,6 @@ func TestDay07Part2(t *testing.T) {
 
 func BenchmarkDay07Part2(b *testing.B) {
 	ss := linesFromFilename(b, filename(7))
-	b.ResetTimer()
 	for b.Loop() {
 		_, _ = Day07Part2(ss)
 	}

@@ -21,7 +21,6 @@ func BenchmarkDay05Part1(b *testing.B) {
     // Read file once (no I/O in loop)
     data := file(b, 5)
     lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-    b.ResetTimer()
     for b.Loop() {
         // Parse in loop (benchmark includes parsing)
         mz := make([]int, 0, len(lines))
@@ -37,7 +36,6 @@ func BenchmarkDay05Part1(b *testing.B) {
 func BenchmarkDay05Part2(b *testing.B) {
     data := file(b, 5)
     lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-    b.ResetTimer()
     for b.Loop() {
         mz := make([]int, 0, len(lines))
         for _, s := range lines {
