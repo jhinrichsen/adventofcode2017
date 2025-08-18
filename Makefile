@@ -70,3 +70,12 @@ peg: grammar.go
 .PHONY: total
 total:
 	awk -f total.awk < benches/all.txt
+
+.PHONY: update-logo
+update-logo:
+	@command -v glab >/dev/null 2>&1 || { echo "glab not found. Install glab: https://gitlab.com/gitlab-org/cli" >&2; exit 1; }
+	@[ -f static/logo.png ] || { echo "static/logo.png not found; nothing to upload" >&2; exit 1; }
+	@proj_id=$$(glab repo view --json id --jq .id); \
+	  echo "Updating GitLab project $$proj_id avatar from static/logo.png..."; \
+	  glab api "projects/$$proj_id" -X PUT -F "avatar=@static/logo.png" >/dev/null; \
+	  echo "Project avatar updated."
