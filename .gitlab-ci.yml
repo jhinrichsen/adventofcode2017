@@ -2,6 +2,7 @@ image: golang:latest
 
 stages:
   - test
+  - update
 
 test-job:
   stage: test
@@ -9,3 +10,104 @@ test-job:
     - go version
     - go test -bench=. -cover
   coverage: '/coverage: \d+\.\d+%/'
+
+update-project-avatar:
+  image: curlimages/curl:latest
+  stage: update
+  needs: []
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - static/logo.png
+    - when: never
+  variables:
+    CURL_RETRY: "--retry 3 --retry-delay 2 --fail"
+  script:
+    - |
+      set -euo pipefail
+      API_URL="$CI_API_V4_URL/projects/$CI_PROJECT_ID"
+      if [ ! -f static/logo.png ]; then
+        echo "static/logo.png not found; nothing to upload." >&2
+        exit 1
+      fi
+      echo "Updating project avatar from static/logo.png on project $CI_PROJECT_ID using CI_JOB_TOKEN..."
+      status=$(curl -sS $CURL_RETRY -w "%{http_code}" -o /tmp/resp.json \
+        -H "JOB-TOKEN: $CI_JOB_TOKEN" \
+        -X PUT \
+        -F "avatar=@static/logo.png" \
+        "$API_URL")
+      if [ "$status" = "200" ]; then
+        echo "Avatar updated via CI_JOB_TOKEN."
+        exit 0
+      fi
+      echo "JOB_TOKEN update failed with HTTP $status."
+      if [ -n "${PROJECT_TOKEN:-}" ]; then
+        echo "Retrying with PRIVATE-TOKEN..."
+        status=$(curl -sS $CURL_RETRY -w "%{http_code}" -o /tmp/resp.json \
+          -H "PRIVATE-TOKEN: $PROJECT_TOKEN" \
+          -X PUT \
+          -F "avatar=@static/logo.png" \
+          "$API_URL")
+        if [ "$status" = "200" ]; then
+          echo "Avatar updated via PRIVATE-TOKEN."
+          exit 0
+        fi
+        echo "PRIVATE-TOKEN update failed with HTTP $status. Response:" >&2
+        cat /tmp/resp.json >&2
+        exit 1
+      else
+        echo "PROJECT_TOKEN not provided; cannot fallback. Response (HTTP $status):" >&2
+        cat /tmp/resp.json >&2
+        exit 1
+      fi
+
+update-project-avatar-manual:
+  image: curlimages/curl:latest
+  stage: update
+  needs: []
+  when: manual
+  allow_failure: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"' # allow manual button on any pipeline
+      when: manual
+    - when: manual
+  variables:
+    CURL_RETRY: "--retry 3 --retry-delay 2 --fail"
+  script:
+    - |
+      set -euo pipefail
+      API_URL="$CI_API_V4_URL/projects/$CI_PROJECT_ID"
+      if [ ! -f static/logo.png ]; then
+        echo "static/logo.png not found; nothing to upload." >&2
+        exit 1
+      fi
+      echo "Manually updating project avatar from static/logo.png on project $CI_PROJECT_ID using CI_JOB_TOKEN..."
+      status=$(curl -sS $CURL_RETRY -w "%{http_code}" -o /tmp/resp.json \
+        -H "JOB-TOKEN: $CI_JOB_TOKEN" \
+        -X PUT \
+        -F "avatar=@static/logo.png" \
+        "$API_URL")
+      if [ "$status" = "200" ]; then
+        echo "Avatar updated via CI_JOB_TOKEN."
+        exit 0
+      fi
+      echo "JOB_TOKEN update failed with HTTP $status."
+      if [ -n "${PROJECT_TOKEN:-}" ]; then
+        echo "Retrying with PRIVATE-TOKEN..."
+        status=$(curl -sS $CURL_RETRY -w "%{http_code}" -o /tmp/resp.json \
+          -H "PRIVATE-TOKEN: $PROJECT_TOKEN" \
+          -X PUT \
+          -F "avatar=@static/logo.png" \
+          "$API_URL")
+        if [ "$status" = "200" ]; then
+          echo "Avatar updated via PRIVATE-TOKEN."
+          exit 0
+        fi
+        echo "PRIVATE-TOKEN update failed with HTTP $status. Response:" >&2
+        cat /tmp/resp.json >&2
+        exit 1
+      else
+        echo "PROJECT_TOKEN not provided; cannot fallback. Response (HTTP $status):" >&2
+        cat /tmp/resp.json >&2
+        exit 1
+      fi
