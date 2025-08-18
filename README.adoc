@@ -7,7 +7,22 @@ image:https://goreportcard.com/badge/gitlab.com/jhinrichsen/adventofcode2017["Go
 image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/master/pipeline.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="pipeline status"]
 image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/master/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="coverage report"]
 
+== Introduction
+
+I don't aim for speed of implementation, meaning being the first to submit.
+While Advent of Code emphasizes speed, I prioritize completeness and getting the first answer correct on the first try.
+The number of tries is priority number one, so you will find exhaustive test cases.
+Although puzzle solutions are user specific, the test cases (`dayNN_test.go`) contain the hardcoded results, so you can safely look at the solutions (`dayNN.go`).
+
+After correctness, I use the problems for performance tuning: minimize runtime and minimize memory allocations.
+
+image::static/dev-compass-640.png[Source: devcompass.com]
+
+My usual setup for Advent of Code according to https://treeform.github.io/devcompas/[Dev Compass].
+
 == Overview
+
+image::static/logo.png[]
 
 Number of tries for a correct answer:
 
