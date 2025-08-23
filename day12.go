@@ -17,6 +17,7 @@ func Day12(r io.Reader) int {
 		i, _ := strconv.Atoi(s)
 		return i
 	}
+
 	groups := make(map[int][]int)
 	sc := bufio.NewScanner(r)
 	for sc.Scan() {
@@ -48,4 +49,44 @@ func Day12(r io.Reader) int {
 		return n
 	}
 	return count(0)
+}
+
+// Day12Part2 returns the total number of groups (connected components) in the
+// program graph described by the input.
+func Day12Part2(r io.Reader) int {
+    atoi := func(s string) int {
+        i, _ := strconv.Atoi(s)
+        return i
+    }
+    groups := make(map[int][]int)
+    sc := bufio.NewScanner(r)
+    for sc.Scan() {
+        fs := strings.Split(sc.Text(), " <-> ")
+        key := atoi(fs[0])
+        var values []int
+        for _, val := range strings.Split(fs[1], ", ") {
+            values = append(values, atoi(val))
+        }
+        groups[key] = values
+    }
+
+    visited := make(map[int]bool)
+    var dfs func(int)
+    dfs = func(id int) {
+        visited[id] = true
+        for _, nbr := range groups[id] {
+            if !visited[nbr] {
+                dfs(nbr)
+            }
+        }
+    }
+
+    var count int
+    for id := range groups {
+        if !visited[id] {
+            count++
+            dfs(id)
+        }
+    }
+    return count
 }
