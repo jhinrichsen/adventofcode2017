@@ -1,3 +1,4 @@
+BENCHMARKS ?= benches/linux-amd64-Intel\(R\)_Core\(TM\)_i7-14700K.txt
 GO ?= CGO_ENABLED=0 go
 
 .PHONY: all
@@ -6,12 +7,13 @@ all: clean lint test
 .PHONY: clean
 clean:
 	$(GO) clean # remove test results from previous runs so that tests are executed
-	-rm \
+	rm -f \
 		coverage.txt \
 		coverage.xml \
 		gl-code-quality-report.json \
 		govulncheck.sarif \
 		junit.xml \
+		README.html \
 		staticcheck.json \
 		test.log
 
@@ -79,3 +81,10 @@ update-logo:
 	  echo "Updating GitLab project $$proj_id avatar from static/logo.png..."; \
 	  glab api "projects/$$proj_id" -X PUT -F "avatar=@static/logo.png" >/dev/null; \
 	  echo "Project avatar updated."
+
+README.html: README.adoc
+	asciidoc $^
+
+.PHONY: total
+total:
+	awk -f total.awk < ${BENCHMARKS}
