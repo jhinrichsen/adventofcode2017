@@ -63,13 +63,13 @@ func (a Registers) True(c Condition) bool {
 }
 
 func (a Registers) Apply(op Operation) {
-	val := a[op.RA.reg]
+	val := a[op.reg]
 	if op.inc {
-		val += op.RA.amount
+		val += op.amount
 	} else {
-		val -= op.RA.amount
+		val -= op.amount
 	}
-	a[op.RA.reg] = val
+	a[op.reg] = val
 }
 
 func (a Registers) Step(i Instruction) {
@@ -106,7 +106,7 @@ func Day08Part2(data []byte) (int, error) {
 	for _, ins := range is {
 		if registers.True(ins.Condition) {
 			registers.Apply(ins.Operation)
-			maxVal = max(maxVal, registers[ins.Operation.RA.reg])
+			maxVal = max(maxVal, registers[ins.Operation.reg])
 		}
 	}
 	return maxVal, nil
