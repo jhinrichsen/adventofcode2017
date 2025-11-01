@@ -99,7 +99,7 @@ Number of tries for a correct answer:
 | 12  |   1    |
 | 13  |   1    |   1
 | 14  |   1    |   1
-| 15  |        |
+| 15  |   1    |   1
 | 16  |        |
 | 17  |        |
 | 18  |        |
@@ -262,6 +262,43 @@ Overall: **-58% memory**, **-99% allocations** at the cost of +3% runtime.
 The slight slowdown is likely due to larger function body reducing instruction cache efficiency, but the massive reduction in allocations significantly reduces GC pressure.
 
 == Day 15: Dueling Generators
+
+=== Performance Optimizations
+
+Day 15 implements linear congruential generators (LCG) requiring billions of modulo operations.
+Two implementations were benchmarked to compare Go compiler optimizations versus hand-written assembly.
+
+**b0 (baseline)**: Pure Go implementation
+- Simple modulo arithmetic: `(a * factor) % 2147483647`
+- Bitwise comparison: `a&0xFFFF == b&0xFFFF`
+- 40 million iterations (Part 1), 5 million pairs (Part 2)
+
+**b1**: Hand-written AMD64 assembly
+- Direct use of MULQ and DIVQ instructions for modulo
+- Explicit register allocation (R14=a, R15=b, R8=matches)
+- Same algorithm as b0, translated to assembly
+
+==== Benchmark Results
+
+----
+              │    b0     │     b1      │
+              │  sec/op   │   sec/op    │
+Day15Part1-16   109ms       139ms         +27% slower
+Day15Part2-16   196ms       231ms         +18% slower
+
+Both: 0 B/op, 0 allocs/op
+----
+
+**Surprising result**: The assembly version is significantly slower than Go.
+
+The Go compiler's optimizer produces faster code because:
+- Modern Go compiler uses sophisticated optimizations for modulo operations
+- The DIV instruction on x86-64 is notoriously slow (not well-pipelined, high latency)
+- Go may use strength reduction or other algebraic optimizations
+- Assembly version suffers from instruction decode overhead
+
+This demonstrates that hand-written assembly is not always faster on modern architectures with sophisticated compilers.
+Both implementations achieve zero allocations.
 
 == Day 16: Permutation Promenade
 
