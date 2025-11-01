@@ -97,8 +97,8 @@ Number of tries for a correct answer:
 | 10  |   2    |   1
 | 11  |   1    |   1
 | 12  |   1    |
-| 13  |        |
-| 14  |        |
+| 13  |   1    |   1
+| 14  |   1    |   1
 | 15  |        |
 | 16  |        |
 | 17  |        |
@@ -178,6 +178,88 @@ Classical off-by-one in index (0..255 <-> 1..256).
 == Day 13: Packet Scanners
 
 == Day 14: Disk Defragmentation
+
+=== Performance Optimizations
+
+Day 14 requires computing 128 knot hashes (Day 10 Part 2), making it computationally intensive.
+Three optimization iterations were benchmarked:
+
+**b0 (baseline)**: Initial implementation
+- Switch statement for hex conversion
+- Inner loop for bit extraction
+- `fmt.Sprintf` for string formatting
+- Recursive flood fill
+
+**b1**: Parsing optimizations
+- Hex lookup table `[256]byte` instead of switch
+- Unrolled 4-bit extraction (no inner loop)
+- `strconv.Itoa` instead of `fmt.Sprintf`
+- Iterative flood fill with explicit stack
+
+**b2**: Inlined knot hash
+- Inlined Day10Part2 into NewDay14
+- Reused buffers across 128 iterations (lengths, list, dense)
+- Direct byte→bit conversion (no hex string intermediate)
+- Eliminated 128 function calls and string allocations
+
+==== Benchmark Results
+
+b0 → b1:
+----
+              │  b0.clean   │              b1.clean              │
+              │   sec/op    │   sec/op     vs base               │
+Day14Part1-16   4.803m ± 1%   4.816m ± 1%       ~ (p=0.631 n=10)
+Day14Part2-16   5.018m ± 1%   4.991m ± 1%  -0.55% (p=0.009 n=10)
+
+              │   b0.clean   │              b1.clean               │
+              │     B/op     │     B/op      vs base               │
+Day14Part1-16   48.65Ki ± 0%   44.76Ki ± 0%  -8.00% (p=0.000 n=10)
+Day14Part2-16   48.65Ki ± 0%   44.75Ki ± 0%  -8.01% (p=0.000 n=10)
+
+              │  b0.clean   │              b1.clean              │
+              │  allocs/op  │  allocs/op   vs base               │
+Day14Part1-16   2.568k ± 0%   2.340k ± 0%  -8.88% (p=0.000 n=10)
+Day14Part2-16   2.568k ± 0%   2.340k ± 0%  -8.88% (p=0.000 n=10)
+----
+
+b1 → b2:
+----
+              │  b1.clean   │              b2.clean              │
+              │   sec/op    │   sec/op     vs base               │
+Day14Part1-16   4.816m ± 1%   4.971m ± 1%  +3.22% (p=0.000 n=10)
+Day14Part2-16   4.991m ± 1%   5.113m ± 1%  +2.46% (p=0.000 n=10)
+
+              │   b1.clean   │               b2.clean               │
+              │     B/op     │     B/op      vs base                │
+Day14Part1-16   44.76Ki ± 0%   20.29Ki ± 0%  -54.67% (p=0.000 n=10)
+Day14Part2-16   44.75Ki ± 0%   20.29Ki ± 0%  -54.67% (p=0.000 n=10)
+
+              │   b1.clean   │              b2.clean              │
+              │  allocs/op   │ allocs/op   vs base                │
+Day14Part1-16   2340.00 ± 0%   36.00 ± 0%  -98.46% (p=0.000 n=10)
+Day14Part2-16   2340.00 ± 0%   36.00 ± 0%  -98.46% (p=0.000 n=10)
+----
+
+b0 → b2 (final):
+----
+              │  b0.clean   │              b2.clean              │
+              │   sec/op    │   sec/op     vs base               │
+Day14Part1-16   4.803m ± 1%   4.971m ± 1%  +3.49% (p=0.000 n=10)
+Day14Part2-16   5.018m ± 1%   5.113m ± 1%  +1.90% (p=0.000 n=10)
+
+              │   b0.clean   │               b2.clean               │
+              │     B/op     │     B/op      vs base                │
+Day14Part1-16   48.65Ki ± 0%   20.29Ki ± 0%  -58.30% (p=0.000 n=10)
+Day14Part2-16   48.65Ki ± 0%   20.29Ki ± 0%  -58.30% (p=0.000 n=10)
+
+              │   b0.clean   │              b2.clean              │
+              │  allocs/op   │ allocs/op   vs base                │
+Day14Part1-16   2568.00 ± 0%   36.00 ± 0%  -98.60% (p=0.000 n=10)
+Day14Part2-16   2568.00 ± 0%   36.00 ± 0%  -98.60% (p=0.000 n=10)
+----
+
+Overall: **-58% memory**, **-99% allocations** at the cost of +3% runtime.
+The slight slowdown is likely due to larger function body reducing instruction cache efficiency, but the massive reduction in allocations significantly reduces GC pressure.
 
 == Day 15: Dueling Generators
 
