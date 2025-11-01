@@ -40,6 +40,22 @@ Implementations MUST calculate solutions and MUST NOT use pre-calculated results
 Implementations MUST NOT look up solutions on the internet.
 Implementations MUST NOT use `panic()`, instead use error handling.
 
+=== Test Pattern
+
+Tests MUST follow this naming and structure pattern:
+
+* `TestDay{NN}Part1Example` - Test for a single Part 1 example. MUST NOT use table-driven test. MUST use `const want` and `exampleFilename(NN)` for parsing.
+* `TestDay{NN}Part1Examples` - Table-driven test for multiple Part 1 examples. MUST use `exampleFilename(NN)` or similar for parsing.
+* `TestDay{NN}Part1` - Single test with `const want` for Part 1 actual input. MUST use `filename(NN)` for parsing. (no "Example" or "Examples" suffix)
+* `TestDay{NN}Part2Example` - Test for a single Part 2 example. MUST NOT use table-driven test. MUST use `const want` and `exampleFilename(NN)` for parsing.
+* `TestDay{NN}Part2Examples` - Table-driven test for multiple Part 2 examples. MUST use `exampleFilename(NN)` or similar for parsing.
+* `TestDay{NN}Part2` - Single test with `const want` for Part 2 actual input. MUST use `filename(NN)` for parsing. (no "Example" or "Examples" suffix)
+
+Important rules:
+* Example tests MUST use the same parsing code as actual tests (e.g., `linesFromFilename(t, exampleFilename(NN))`)
+* A single example SHOULD NOT use table-driven tests - a table with a single row is an anomaly
+* Test error messages MUST use the format: `t.Fatalf("want %v but got %v", want, got)`
+
 === Implement part 1 examples
 
 1. Follow all rules documented in comments in `.day.go` and `.day_test.go` they are part of the definition of done and MUST be followed.
@@ -48,24 +64,34 @@ Implementations MUST NOT use `panic()`, instead use error handling.
 4. Remove all comments from `day{NN}.go` and `day{NN}_test.go`.
 5. Rename all data and code (struct, functions, test cases, benchmarks) from `00` to `{{NN}}`.
 6. Use the puzzle description from the website to implement all examples for part 1. Make sure to test all examples and cases described in the puzzle description.
-7. Definition of done: all test cases succeed.
-8. Once the DoD is reached, continue with part 1 without user interaction.
+7. Create example test data file `testdata/day{NN}_example.txt` containing the example input.
+8. Create a test function named `TestDay{NN}Part1Example` (singular) if there is one example, or `TestDay{NN}Part1Examples` (plural) if there are multiple examples.
+   * For a single example: MUST NOT use table-driven test. MUST use `const want` and `exampleFilename(NN)`.
+   * For multiple examples: MUST use table-driven test with each test case containing the input and expected output.
+9. Definition of done: all test cases succeed.
+10. Once the DoD is reached, continue with part 1 without user interaction.
 
 == Implement part 1
 
 1. Implement test case for part1 using the provided puzzle input.
-2. The first run of the test case for part 1 will fail, because the expected solution is unknown (want=?, got=X).
-3. On the second run, use want=X, and use the test condition on `want == got`.
-4. Definition of done: test case for part 1 succeeds.
-5. Stop here, and wait for user interaction. The solution for part 1 needs to be manually verified via the website.
+2. Create a test function named `TestDay{NN}Part1` (note: no "Example" or "Examples" suffix). This test MUST NOT be table-driven. It MUST use a `const want` for the expected result.
+3. The first run of the test case for part 1 will fail, because the expected solution is unknown (want=?, got=X).
+4. On the second run, use want=X, and use the test condition on `want == got`.
+5. Definition of done: test case for part 1 succeeds.
+6. Stop here, and wait for user interaction. The solution for part 1 needs to be manually verified via the website.
 
 == Implement part 2 examples
 
 1. Use the puzzle description supplied locally (you cannot look it up as it requires login) to implement part 2 all examples.
-2. Definition of done: all test cases succeed.
-3. Once the DoD is reached, continue with part 2 without user interaction.
+2. Create example test data file `testdata/day{NN}_example.txt` if not already created for Part 1.
+3. Create a test function named `TestDay{NN}Part2Example` (singular) if there is one example, or `TestDay{NN}Part2Examples` (plural) if there are multiple examples.
+   * For a single example: MUST NOT use table-driven test. MUST use `const want` and `exampleFilename(NN)`.
+   * For multiple examples: MUST use table-driven test with each test case containing the input and expected output.
+4. Definition of done: all test cases succeed.
+5. Once the DoD is reached, continue with part 2 without user interaction.
 
 == Implement part 2
 
 1. Implement test case for part 2 following the procedure described for part 1.
+2. Create a test function named `TestDay{NN}Part2` (note: no "Example" or "Examples" suffix). This test MUST NOT be table-driven. It MUST use a `const want` for the expected result.
 
