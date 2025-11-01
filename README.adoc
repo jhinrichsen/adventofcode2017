@@ -304,6 +304,52 @@ Both implementations achieve zero allocations.
 
 == Day 17: Spinlock
 
+=== Performance Optimizations
+
+Day 17 implements a circular buffer with 2017 insertions.
+The maximum buffer size is known (2018 elements), enabling pre-allocation.
+
+Two approaches were compared:
+
+**Array-backed linked list**: O(1) insertion
+- Pre-allocate array of 2018 nodes
+- Each node stores value and next index
+- Insert by updating pointers only
+- Requires ~661,000 pointer chases (328 steps × 2017 insertions)
+
+**Pre-allocated slice**: O(n) insertion with copy()
+- Pre-allocate with capacity 2018: `make([]int, 1, 2018)`
+- Insert using `append()` + `copy()` to shift elements
+- Uses highly optimized `memmove` (vectorized CPU instructions)
+
+==== Benchmark Results
+
+----
+                        │  Linked List  │  Slice + copy()  │
+                        │    sec/op     │     sec/op       │
+Day17Part1-16 (2017)      816μs           68μs              12x faster
+
+Both: 0 B/op, 0 allocs/op
+----
+
+**Surprising result**: The O(n) slice approach is 12x faster than O(1) linked list.
+
+Why slice + copy() wins:
+- `copy()` uses optimized `memmove` with vectorized SIMD instructions
+- Sequential memory access is cache-friendly (spatial locality)
+- CPU prefetcher can predict and preload data
+- Modern CPUs excel at bulk memory operations
+
+Why linked list loses:
+- Pointer chasing causes random memory access (cache misses)
+- Each step requires dereferencing: `current = nodes[current].next`
+- Poor spatial locality defeats CPU cache hierarchy
+- No opportunity for SIMD vectorization
+
+**Lesson**: Algorithmic complexity (Big-O) doesn't predict real-world performance.
+Hardware characteristics (cache, SIMD, prefetching) often dominate constant factors.
+The "theoretically slower" O(n) algorithm wins due to hardware realities.
+
 == Day 18: Duet
 
 == Day 19: A Series of Tubes
