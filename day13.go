@@ -1,7 +1,43 @@
 package adventofcode2017
 
-// Day13UsingSparseArray returns severity of whole trip through layers.
-func Day13UsingSparseArray(layers []int) int {
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+func NewDay13Array(lines []string) ([]int, error) {
+	var m = make(map[int]int)
+	var maxDepth int
+	for _, line := range lines {
+		parts := strings.Split(line, ": ")
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("want key: value but got %v", line)
+		}
+		k, err := strconv.Atoi(parts[0])
+		if err != nil {
+			return nil, fmt.Errorf("want numeric key but got %v", parts[0])
+		}
+		v, err := strconv.Atoi(parts[1])
+		if err != nil {
+			return nil, fmt.Errorf("want numeric key but got %v", parts[1])
+		}
+		m[k] = v
+		if maxDepth < k {
+			maxDepth = k
+		}
+	}
+
+	// convert map to array
+	layers := make([]int, maxDepth+1)
+	for k, v := range m {
+		layers[k] = v
+	}
+	return layers, nil
+}
+
+// Day13UsingArray returns severity of whole trip through layers.
+func Day13UsingArray(layers []int) int {
 	// position of security scanner within one layer
 	positions := make([]int, len(layers))
 	// direction of security scanner, 1: down, -1: up
@@ -39,47 +75,74 @@ func Day13UsingSparseArray(layers []int) int {
 	return severity
 }
 
-type node struct {
-	Next      *node
+type Day13Puzzle struct {
+	Next      *Day13Puzzle
 	Depth     int
 	Range     int
 	Position  int // Current position of security scanner 0..Range
 	Direction int
 }
 
-// Tack progresses security scanner one step
-func (a *node) Tack() {
-	// lazy init
-	if a.Direction == 0 {
-		a.Direction = -1
-	}
-
-	// Need to turn around?
-	if a.Position == 0 || a.Position == a.Range-1 {
-		a.Direction *= -1
-	}
-	a.Position += a.Direction
-}
-
-func (a *node) Caught() bool {
-	return a.Position == 0
-}
-
-func (a *node) Severity() int {
-	return a.Depth * a.Range
-}
-
-// Day13UsingList returns severity of whole trip through layers.
-func Day13UsingList(l *node) int {
-	severity := 0
-	for ; l != nil; l = l.Next {
-		// progress through all layers
-		for i := 0; i < l.Depth; i++ {
-			l.Tack()
+func NewDay13(lines []string) (*Day13Puzzle, error) {
+	var head, prev *Day13Puzzle
+	for _, line := range lines {
+		parts := strings.Split(line, ": ")
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("want 'key: value' but got %v", line)
 		}
-		if l.Caught() {
-			severity += l.Depth * l.Range
+		k, err := strconv.Atoi(parts[0])
+		if err != nil {
+			return nil, fmt.Errorf("want numeric key but got %v", parts[0])
+		}
+		v, err := strconv.Atoi(parts[1])
+		if err != nil {
+			return nil, fmt.Errorf("want numeric key but got %v", parts[1])
+		}
+		l := &Day13Puzzle{
+			Depth: k,
+			Range: v,
+		}
+		if head == nil {
+			head = l
+		}
+		if prev != nil {
+			prev.Next = l
+		}
+		prev = l
+	}
+	return head, nil
+}
+
+// Day13 calculates either the severity (part1=true) or minimum delay (part1=false).
+// For part 1: returns severity of whole trip through layers.
+// For part 2: returns the minimum delay needed to pass through without being caught.
+// Scanner positions are deterministic: a scanner with range R has period 2*(R-1).
+// We get caught at layer depth D if (delay + D) % (2 * (R - 1)) == 0.
+func Day13(l *Day13Puzzle, part1 bool) uint {
+	if part1 {
+		// Part 1: calculate severity
+		var severity uint
+		for layer := l; layer != nil; layer = layer.Next {
+			period := 2 * (layer.Range - 1)
+			if layer.Depth%period == 0 {
+				severity += uint(layer.Depth * layer.Range)
+			}
+		}
+		return severity
+	}
+
+	// Part 2: find minimum delay
+	for delay := 0; ; delay++ {
+		caught := false
+		for layer := l; layer != nil; layer = layer.Next {
+			period := 2 * (layer.Range - 1)
+			if (delay+layer.Depth)%period == 0 {
+				caught = true
+				break
+			}
+		}
+		if !caught {
+			return uint(delay)
 		}
 	}
-	return severity
 }
