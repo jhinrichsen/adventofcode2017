@@ -1,5 +1,3 @@
-// Package adventofcode2017 implements some of the puzzles of
-// https://adventofcode.com.
 package adventofcode2017
 
 import (
@@ -8,10 +6,7 @@ import (
 
 func TestDay10Part1Example(t *testing.T) {
 	const want = 12
-	p := NewDay10([]byte("3,4,1,5"))
-	p.size = 5
-	p.zero = true
-	got := Day10(p)
+	got := Day10Part1(exampleFile(t, 10), 5)
 	if want != got {
 		t.Fatalf("want %v but got %v", want, got)
 	}
@@ -19,19 +14,16 @@ func TestDay10Part1Example(t *testing.T) {
 
 func TestDay10Part1(t *testing.T) {
 	const want = 52070
-	buf := file(t, 10)
-	p := NewDay10(buf)
-	got := Day10(p)
+	got := Day10Part1(file(t, 10), 256)
 	if want != got {
 		t.Fatalf("want %v but got %v", want, got)
 	}
 }
 
 func BenchmarkDay10Part1(b *testing.B) {
-	buf := file(b, 10)
-	p := NewDay10(buf)
+	input := file(b, 10)
 	for b.Loop() {
-		_ = Day10(p)
+		_ = Day10Part1(input, 256)
 	}
 }
 
@@ -56,17 +48,16 @@ func TestDay10Part2Examples(t *testing.T) {
 }
 
 func TestDay10Part2(t *testing.T) {
-    const want = "7f94112db4e32e19cf6502073c66f9bb"
-    buf := file(t, 10)
-    got := Day10Part2(buf)
-    if want != got {
-        t.Fatalf("want %v but got %v", want, got)
-    }
+	const want = "7f94112db4e32e19cf6502073c66f9bb"
+	got := Day10Part2(file(t, 10))
+	if want != got {
+		t.Fatalf("want %v but got %v", want, got)
+	}
 }
 
 func BenchmarkDay10Part2(b *testing.B) {
-	buf := file(b, 10)
+	input := file(b, 10)
 	for b.Loop() {
-		_ = Day10Part2(buf)
+		_ = Day10Part2(input)
 	}
 }
