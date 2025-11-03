@@ -6,7 +6,11 @@ import (
 
 func TestDay15Part1Example(t *testing.T) {
 	const want = 588
-	got := Day15Part1(NewDay15(linesFromFilename(t, exampleFilename(15))))
+	p, err := NewDay15(linesFromFilename(t, exampleFilename(15)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := Day15Part1(p)
 	if want != got {
 		t.Fatalf("want %v but got %v", want, got)
 	}
@@ -14,14 +18,18 @@ func TestDay15Part1Example(t *testing.T) {
 
 func TestDay15Part1(t *testing.T) {
 	const want = 619
-	got := Day15Part1(NewDay15(linesFromFilename(t, filename(15))))
+	p, err := NewDay15(linesFromFilename(t, filename(15)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := Day15Part1(p)
 	if want != got {
 		t.Fatalf("want %v but got %v", want, got)
 	}
 }
 
 func BenchmarkDay15Part1(b *testing.B) {
-	p := NewDay15(linesFromFilename(b, filename(15)))
+	p, _ := NewDay15(linesFromFilename(b, filename(15)))
 	for b.Loop() {
 		_ = Day15Part1(p)
 	}
@@ -29,7 +37,11 @@ func BenchmarkDay15Part1(b *testing.B) {
 
 func TestDay15Part2Example(t *testing.T) {
 	const want = 309
-	got := Day15Part2(NewDay15(linesFromFilename(t, exampleFilename(15))))
+	p, err := NewDay15(linesFromFilename(t, exampleFilename(15)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := Day15Part2(p)
 	if want != got {
 		t.Fatalf("want %v but got %v", want, got)
 	}
@@ -37,28 +49,32 @@ func TestDay15Part2Example(t *testing.T) {
 
 func TestDay15Part2(t *testing.T) {
 	const want = 290
-	got := Day15Part2(NewDay15(linesFromFilename(t, filename(15))))
+	p, err := NewDay15(linesFromFilename(t, filename(15)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := Day15Part2(p)
 	if want != got {
 		t.Fatalf("want %v but got %v", want, got)
 	}
 }
 
 func BenchmarkDay15Part2(b *testing.B) {
-	p := NewDay15(linesFromFilename(b, filename(15)))
+	p, _ := NewDay15(linesFromFilename(b, filename(15)))
 	for b.Loop() {
 		_ = Day15Part2(p)
 	}
 }
 
 func BenchmarkDay15Part1AsmB1(b *testing.B) {
-	p := NewDay15(linesFromFilename(b, filename(15)))
+	p, _ := NewDay15(linesFromFilename(b, filename(15)))
 	for b.Loop() {
 		_ = day15Part1AsmB1(p.startA, p.startB)
 	}
 }
 
 func BenchmarkDay15Part2AsmB1(b *testing.B) {
-	p := NewDay15(linesFromFilename(b, filename(15)))
+	p, _ := NewDay15(linesFromFilename(b, filename(15)))
 	for b.Loop() {
 		_ = day15Part2AsmB1(p.startA, p.startB)
 	}

@@ -11,7 +11,7 @@ type Day15Puzzle struct {
 }
 
 // NewDay15 parses the input lines and returns generator starting values.
-func NewDay15(lines []string) Day15Puzzle {
+func NewDay15(lines []string) (Day15Puzzle, error) {
 	var p Day15Puzzle
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -19,12 +19,18 @@ func NewDay15(lines []string) Day15Puzzle {
 			continue
 		}
 		if strings.HasPrefix(line, "Generator A") {
-			fmt.Sscanf(line, "Generator A starts with %d", &p.startA)
+			_, err := fmt.Sscanf(line, "Generator A starts with %d", &p.startA)
+			if err != nil {
+				return Day15Puzzle{}, err
+			}
 		} else if strings.HasPrefix(line, "Generator B") {
-			fmt.Sscanf(line, "Generator B starts with %d", &p.startB)
+			_, err := fmt.Sscanf(line, "Generator B starts with %d", &p.startB)
+			if err != nil {
+				return Day15Puzzle{}, err
+			}
 		}
 	}
-	return p
+	return p, nil
 }
 
 // Day15Part1 counts matching lowest 16 bits after 40 million pairs.
