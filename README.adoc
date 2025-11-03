@@ -360,6 +360,25 @@ The "theoretically slower" O(n) algorithm wins due to hardware realities.
 
 == Day 22: Sporifica Virus
 
+----
+              │      b0       │               b1                │
+              │    sec/op     │   sec/op     vs base            │
+Day22Part1-16   418.2µ ± ∞ ¹   365.4µ ± ∞ ¹  -12.63% (p=1.000 n=1)
+Day22Part2-16   401.6m ± ∞ ¹   303.1m ± ∞ ¹  -24.53% (p=1.000 n=1)
+
+              │      b0       │               b1                │
+              │     B/op      │    B/op      vs base            │
+Day22Part1-16   106.3Ki ± ∞ ¹   89.67Ki ± ∞ ¹  -15.64% (p=1.000 n=1)
+Day22Part2-16   6.666Mi ± ∞ ¹   4.527Mi ± ∞ ¹  -32.10% (p=1.000 n=1)
+
+              │      b0      │              b1               │
+              │  allocs/op   │ allocs/op   vs base           │
+Day22Part1-16    23.00 ± ∞ ¹   26.00 ± ∞ ¹  +13.04% (p=1.000 n=1)
+Day22Part2-16    533.0 ± ∞ ¹   536.0 ± ∞ ¹   +0.56% (p=1.000 n=1)
+----
+
+Optimizations: packed int64 coordinates, inlined burst logic, direction delta lookup table.
+
 == Day 23: Coprocessor Conflagration
 
 == Day 24: Electromagnetic Moat

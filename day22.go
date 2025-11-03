@@ -107,9 +107,69 @@ func (vc *Day22Puzzle) Burst(part1 bool) {
 	}
 }
 
+var deltas = [4][2]int{
+	{0, -1}, // Up
+	{1, 0},  // Right
+	{0, 1},  // Down
+	{-1, 0}, // Left
+}
+
+func packPos(x, y int) int64 {
+	return int64(x)<<32 | int64(uint32(y))
+}
+
 func Day22(vc *Day22Puzzle, bursts uint, part1 bool) (uint, error) {
-	for range bursts {
-		vc.Burst(part1)
+	// Convert to packed coordinates
+	states := make(map[int64]NodeState, len(vc.States))
+	for pt, state := range vc.States {
+		states[packPos(pt.X, pt.Y)] = state
 	}
-	return vc.Infections, nil
+
+	x, y := vc.Pos.X, vc.Pos.Y
+	dir := vc.Dir
+	infections := vc.Infections
+
+	if part1 {
+		for range bursts {
+			pos := packPos(x, y)
+			state := states[pos]
+
+			if state == Infected {
+				dir = (dir + 1) % 4 // TurnRight
+				delete(states, pos)
+			} else {
+				dir = (dir + 3) % 4 // TurnLeft
+				states[pos] = Infected
+				infections++
+			}
+
+			x += deltas[dir][0]
+			y += deltas[dir][1]
+		}
+	} else {
+		for range bursts {
+			pos := packPos(x, y)
+			state := states[pos]
+
+			switch state {
+			case Clean:
+				dir = (dir + 3) % 4 // TurnLeft
+				states[pos] = Weakened
+			case Weakened:
+				states[pos] = Infected
+				infections++
+			case Infected:
+				dir = (dir + 1) % 4 // TurnRight
+				states[pos] = Flagged
+			case Flagged:
+				dir = (dir + 2) % 4 // Reverse
+				delete(states, pos)
+			}
+
+			x += deltas[dir][0]
+			y += deltas[dir][1]
+		}
+	}
+
+	return infections, nil
 }
