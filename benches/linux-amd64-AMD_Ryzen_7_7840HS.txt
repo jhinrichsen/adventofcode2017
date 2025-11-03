@@ -1,0 +1,54 @@
+goos: linux
+goarch: amd64
+pkg: gitlab.com/jhinrichsen/adventofcode2017
+cpu: AMD Ryzen 7 7840HS w/ Radeon 780M Graphics     
+BenchmarkDay01Part2-16    	  212106	      5373 ns/op	    2048 B/op	       1 allocs/op
+BenchmarkDay01Part1-16    	  205785	      5292 ns/op	    2048 B/op	       1 allocs/op
+BenchmarkDay02Part1-16    	10338201	       113.0 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay02Part2-16    	  391184	      2749 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay03Part1-16    	      60	  18153420 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay03Part2-16    	79395661	        15.09 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay04Part1-16    	    7874	    153684 ns/op	  137056 B/op	    1016 allocs/op
+BenchmarkDay04Part2-16    	     861	   1338619 ns/op	  907834 B/op	   17427 allocs/op
+BenchmarkDay05Part1-16    	    2402	    471206 ns/op	    9472 B/op	       1 allocs/op
+BenchmarkDay05Part2-16    	      22	  45560837 ns/op	    9472 B/op	       1 allocs/op
+BenchmarkDay06Part1-16    	 7320963	       158.0 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay06Part2-16    	     830	   1391874 ns/op	 3544837 B/op	      75 allocs/op
+BenchmarkDay07Part1-16    	    6198	    176828 ns/op	  237720 B/op	    1472 allocs/op
+BenchmarkDay07Part2-16    	    1610	    700770 ns/op	  665520 B/op	    2505 allocs/op
+BenchmarkDay08Part1-16    	    5540	    197565 ns/op	  292168 B/op	    2018 allocs/op
+BenchmarkDay08Part2-16    	    5584	    203324 ns/op	  292168 B/op	    2018 allocs/op
+BenchmarkDay09Part1-16    	   61928	     19075 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay09Part2-16    	   78669	     14978 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay10Part1-16    	  307560	      3264 ns/op	    2496 B/op	       4 allocs/op
+BenchmarkDay10Part2-16    	   14571	     81896 ns/op	     576 B/op	      19 allocs/op
+BenchmarkDay11Part1-16    	  147912	      7843 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay11Part2-16    	  115568	      9908 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay12Part1-16    	    2329	    464294 ns/op	  555865 B/op	    9707 allocs/op
+BenchmarkDay12Part2-16    	    1599	    694365 ns/op	  694666 B/op	    9725 allocs/op
+BenchmarkDay13Part2-16    	      70	  14570854 ns/op	   10359 B/op	     147 allocs/op
+BenchmarkDay14Part1-16    	     247	   4877530 ns/op	   20773 B/op	      36 allocs/op
+BenchmarkDay14Part2-16    	     237	   5012548 ns/op	   20773 B/op	      36 allocs/op
+BenchmarkDay15Part1-16    	      10	 108613760 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay15Part2-16    	       6	 190038955 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay16Part1-16    	   10724	    111408 ns/op	      16 B/op	       1 allocs/op
+BenchmarkDay16Part2-16    	      72	  14487200 ns/op	      16 B/op	       1 allocs/op
+BenchmarkDay17Part1-16    	   18374	     65139 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay17Part2-16    	       9	 120215674 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDay18Part1-16    	   43392	     27503 ns/op	   14112 B/op	     576 allocs/op
+BenchmarkDay18Part2-16    	     276	   4228351 ns/op	 1935169 B/op	   72285 allocs/op
+BenchmarkDay19Part1-16    	   46530	     25935 ns/op	      24 B/op	       2 allocs/op
+BenchmarkDay19Part2-16    	   47618	     25727 ns/op	      32 B/op	       3 allocs/op
+BenchmarkDay20Part1-16    	    4036	    267898 ns/op	  265728 B/op	    4001 allocs/op
+BenchmarkDay20Part2-16    	      21	  51190647 ns/op	121512878 B/op	   20083 allocs/op
+BenchmarkDay21Part1-16    	    6960	    172221 ns/op	  241744 B/op	    6725 allocs/op
+BenchmarkDay21Part2-16    	      10	 100309869 ns/op	92668392 B/op	 3868477 allocs/op
+BenchmarkDay22Part1-16    	    2706	    418185 ns/op	  108808 B/op	      23 allocs/op
+BenchmarkDay22Part2-16    	       3	 401621833 ns/op	 6989544 B/op	     533 allocs/op
+BenchmarkDay23Part1-16    	     352	   3383386 ns/op	 3245186 B/op	  132353 allocs/op
+BenchmarkDay23Part2-16    	   37756	     31234 ns/op	    3328 B/op	      33 allocs/op
+BenchmarkDay24Part1-16    	      13	  79738557 ns/op	52949799 B/op	  827308 allocs/op
+BenchmarkDay24Part2-16    	      13	  82047904 ns/op	52949792 B/op	  827308 allocs/op
+BenchmarkDay25Part1-16    	       4	 316807380 ns/op	  297152 B/op	      78 allocs/op
+PASS
+ok  	gitlab.com/jhinrichsen/adventofcode2017	54.490s

@@ -1,5 +1,5 @@
-BENCHMARKS ?= benches/linux-amd64-Intel\(R\)_Core\(TM\)_i7-14700K.txt
 GO ?= CGO_ENABLED=0 go
+BENCH_FILE = benches/$(shell go env GOOS)-$(shell go env GOARCH)-$(shell lscpu | grep "Model name:" | cut -d: -f2 | xargs | sed 's/ \(CPU\|@\|w\/\).*//' | sed 's/ /_/g').txt
 
 .PHONY: all
 all: clean lint test
@@ -20,6 +20,10 @@ clean:
 .PHONY: bench
 bench:
 	$(GO) test -run=^$ -bench=. -benchmem
+
+$(BENCH_FILE):
+	@echo "Running benchmarks and saving to $@..."
+	@$(GO) test -run=^$$ -bench=Day..Part.$$ -benchmem | tee $@
 
 .PHONY: lint
 lint:
@@ -81,5 +85,5 @@ README.html: README.adoc
 	asciidoc $^
 
 .PHONY: total
-total:
-	awk -f total.awk < ${BENCHMARKS}
+total: $(BENCH_FILE)
+	awk -f total.awk < $(BENCH_FILE)
