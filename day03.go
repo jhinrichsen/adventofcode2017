@@ -11,15 +11,6 @@ package adventofcode2017
 
 import "math"
 
-// abs returns the absolute value of an integer
-func abs(n int) int {
-	// use branching impl instead of y ← x >> 63, (x XOR y) - y
-	if n < 0 {
-		return -n
-	}
-	return n
-}
-
 // delta returns transformation for one single square
 func delta(n int, axisfn func(float64) float64) int {
 	f := float64(4*(n-2) + 1)
