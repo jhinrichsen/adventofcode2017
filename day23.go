@@ -54,7 +54,7 @@ func isPrime(n int) bool {
 	return true
 }
 
-func Day23(prog Day23Puzzle, part1 bool) (uint, error) {
+func Day23(prog Day23Puzzle, part1 bool) uint {
 	if part1 {
 		regs := make(map[string]int)
 		pc := 0
@@ -80,7 +80,7 @@ func Day23(prog Day23Puzzle, part1 bool) (uint, error) {
 			pc++
 		}
 
-		return mulCount, nil
+		return mulCount
 	}
 
 	b := 109900
@@ -94,5 +94,5 @@ func Day23(prog Day23Puzzle, part1 bool) (uint, error) {
 		b += 17
 	}
 
-	return h, nil
+	return h
 }

@@ -5,41 +5,17 @@ import (
 )
 
 func TestDay25Part1Example(t *testing.T) {
-	const want = 3
-	lines := linesFromFilename(t, exampleFilename(25))
-	puzzle, err := NewDay25(lines)
-	if err != nil {
-		t.Fatal(err)
-	}
-	got, err := Day25(puzzle, true)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if want != got {
-		t.Fatalf("want %d but got %d", want, got)
-	}
+	testDayPart(t, 25, exampleFilename, true, NewDay25, Day25, uint(3))
 }
 
 func TestDay25Part1(t *testing.T) {
-	const want = 2794
-	lines := linesFromFilename(t, filename(25))
-	puzzle, err := NewDay25(lines)
-	if err != nil {
-		t.Fatal(err)
-	}
-	got, err := Day25(puzzle, true)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if want != got {
-		t.Fatalf("want %d but got %d", want, got)
-	}
+	testDayPart(t, 25, filename, true, NewDay25, Day25, uint(2794))
 }
 
 func BenchmarkDay25Part1(b *testing.B) {
 	lines := linesFromFilename(b, filename(25))
 	for b.Loop() {
 		puzzle, _ := NewDay25(lines)
-		_, _ = Day25(puzzle, true)
+		_ = Day25(puzzle, true)
 	}
 }

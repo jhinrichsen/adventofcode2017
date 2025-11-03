@@ -176,7 +176,7 @@ func enhance(grid Grid, rb *RuleBook) Grid {
 	return joinGrids(blocks)
 }
 
-func Day21(rb *RuleBook, part1 bool) (uint, error) {
+func Day21(rb *RuleBook, part1 bool) uint {
 	grid := parseGrid(".#./..#/###")
 
 	iterations := 18
@@ -188,5 +188,5 @@ func Day21(rb *RuleBook, part1 bool) (uint, error) {
 		grid = enhance(grid, rb)
 	}
 
-	return grid.CountOn(), nil
+	return grid.CountOn()
 }

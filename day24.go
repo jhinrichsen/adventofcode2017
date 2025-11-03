@@ -42,7 +42,7 @@ type bridgeState struct {
 	length   uint
 }
 
-func Day24(components Day24Puzzle, part1 bool) (uint, error) {
+func Day24(components Day24Puzzle, part1 bool) uint {
 	maxStrength := uint(0)
 	maxLength := uint(0)
 
@@ -99,5 +99,5 @@ func Day24(components Day24Puzzle, part1 bool) (uint, error) {
 		}
 	}
 
-	return maxStrength, nil
+	return maxStrength
 }

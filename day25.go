@@ -101,7 +101,7 @@ func NewDay25(lines []string) (Day25Puzzle, error) {
 	return puzzle, nil
 }
 
-func Day25(puzzle Day25Puzzle, part1 bool) (uint, error) {
+func Day25(puzzle Day25Puzzle, part1 bool) uint {
 	tape := make(map[int]int)
 	cursor := 0
 	state := puzzle.StartState
@@ -129,5 +129,5 @@ func Day25(puzzle Day25Puzzle, part1 bool) (uint, error) {
 		}
 	}
 
-	return checksum, nil
+	return checksum
 }

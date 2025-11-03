@@ -78,9 +78,9 @@ func (p *Particle) tick() {
 	p.Pos.Z += p.Vel.Z
 }
 
-func Day20(p Day20Puzzle, part1 bool) (uint, error) {
+func Day20(p Day20Puzzle, part1 bool) uint {
 	if len(p) == 0 {
-		return 0, nil
+		return 0
 	}
 
 	if part1 {
@@ -113,7 +113,7 @@ func Day20(p Day20Puzzle, part1 bool) (uint, error) {
 			}
 		}
 
-		return uint(closestIdx), nil
+		return uint(closestIdx)
 	}
 
 	particles := make([]Particle, len(p))
@@ -142,5 +142,5 @@ func Day20(p Day20Puzzle, part1 bool) (uint, error) {
 		}
 	}
 
-	return uint(len(particles)), nil
+	return uint(len(particles))
 }
