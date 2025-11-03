@@ -25,8 +25,7 @@ bench:
 lint:
 	test -z $(gofmt -l .)
 	$(GO) vet
-	$(GO) run honnef.co/go/tools/cmd/staticcheck@latest -version
-	$(GO) run honnef.co/go/tools/cmd/staticcheck@latest
+	$(GO) run github.com/golangci/golangci-lint/cmd/golangci-lint@v1.62.2 run ./...
 	$(GO) run github.com/client9/misspell/cmd/misspell@latest *
 
 .PHONY: prof
@@ -68,10 +67,6 @@ govulncheck.sarif:
 	peg -noast -switch -inline -strict -output $@ $<
 
 peg: grammar.go
-
-.PHONY: total
-total:
-	awk -f total.awk < benches/all.txt
 
 .PHONY: update-logo
 update-logo:
