@@ -7,6 +7,8 @@ image:https://goreportcard.com/badge/gitlab.com/jhinrichsen/adventofcode2017["Go
 image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/master/pipeline.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="pipeline status"]
 image:https://gitlab.com/jhinrichsen/adventofcode2017/badges/master/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2017/-/commits/master",title="coverage report"]
 
+image::static/dashboard.png[AOC result for 2017]
+
 == Introduction
 
 I don't aim for speed of implementation, meaning being the first to submit.
@@ -21,8 +23,6 @@ image::static/dev-compass-640.png[Source: devcompass.com]
 My usual setup for Advent of Code according to https://treeform.github.io/devcompas/[Dev Compass].
 
 == Overview
-
-image::static/logo.png[]
 
 Number of tries for a correct answer:
 
@@ -328,7 +328,11 @@ Day21Part1-16   6.725k ± ∞ ¹   6.424k ± ∞ ¹    -4.48% (p=1.000 n=1)
 Day21Part2-16   3.868M ± ∞ ¹   6.437k ± ∞ ¹   -99.83% (p=1.000 n=1)
 ----
 
-Optimization: Replaced 2D `[][]byte` grid with 1D slice representation (`Grid1D`) for better cache locality. Combined with uint16 bitset pattern matching to eliminate string conversions and grid copying. Part2 improved 3.6x (107ms → 30ms) with 90% less memory and 99.8% fewer allocations (3.87M → 6.4k).
+Optimization: Replaced 2D `[][]byte` grid with 1D slice representation (`Grid1D`) for better cache locality.
+
+Combined with uint16 bitset pattern matching to eliminate string conversions and grid copying.
+
+Part2 improved 3.6x (107ms → 30ms) with 90% less memory and 99.8% fewer allocations (3.87M → 6.4k).
 
 == Day 22: Sporifica Virus
 
