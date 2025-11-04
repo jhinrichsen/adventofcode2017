@@ -4,6 +4,67 @@ import (
 	"strings"
 )
 
+// Grid1D represents a square grid as a 1D slice for better cache locality
+type Grid1D struct {
+	data []byte
+	size int
+}
+
+func newGrid1D(size int) Grid1D {
+	return Grid1D{
+		data: make([]byte, size*size),
+		size: size,
+	}
+}
+
+func (g Grid1D) get(x, y int) byte {
+	return g.data[y*g.size+x]
+}
+
+func (g Grid1D) set(x, y int, val byte) {
+	g.data[y*g.size+x] = val
+}
+
+func (g Grid1D) countOn() uint {
+	var count uint
+	for _, cell := range g.data {
+		if cell == '#' {
+			count++
+		}
+	}
+	return count
+}
+
+// Extract 2x2 or 3x3 block as uint16 bitset
+func (g Grid1D) extractBlock(x, y, blockSize int) uint16 {
+	var bits uint16
+	bit := uint16(0)
+	for dy := 0; dy < blockSize; dy++ {
+		for dx := 0; dx < blockSize; dx++ {
+			if g.get(x+dx, y+dy) == '#' {
+				bits |= (1 << bit)
+			}
+			bit++
+		}
+	}
+	return bits
+}
+
+// Write a block from uint16 bitset
+func (g Grid1D) writeBlock(x, y, blockSize int, bits uint16) {
+	bit := uint16(0)
+	for dy := 0; dy < blockSize; dy++ {
+		for dx := 0; dx < blockSize; dx++ {
+			if bits&(1<<bit) != 0 {
+				g.set(x+dx, y+dy, '#')
+			} else {
+				g.set(x+dx, y+dy, '.')
+			}
+			bit++
+		}
+	}
+}
+
 type Grid [][]byte
 
 func (g Grid) String() string {
@@ -75,8 +136,52 @@ type Rule struct {
 	Replacement Grid
 }
 
+// Convert Grid to uint16 bitset
+func gridToBits(g Grid) uint16 {
+	var bits uint16
+	bit := uint16(0)
+	for i := range g {
+		for j := range g[i] {
+			if g[i][j] == '#' {
+				bits |= (1 << bit)
+			}
+			bit++
+		}
+	}
+	return bits
+}
+
+// Rotate 2x2 bitset
+func rotate2(bits uint16) uint16 {
+	return ((bits & 0x1) << 1) | ((bits & 0x2) << 2) |
+		((bits & 0x4) >> 2) | ((bits & 0x8) >> 1)
+}
+
+// Rotate 3x3 bitset
+func rotate3(bits uint16) uint16 {
+	return ((bits & 0x001) << 2) | ((bits & 0x002) << 4) | ((bits & 0x004) << 6) |
+		((bits & 0x008) >> 2) | ((bits & 0x010) << 0) | ((bits & 0x020) << 2) |
+		((bits & 0x040) >> 6) | ((bits & 0x080) >> 4) | ((bits & 0x100) >> 2)
+}
+
+// Flip 2x2 bitset
+func flip2(bits uint16) uint16 {
+	return ((bits & 0x1) << 1) | ((bits & 0x2) >> 1) |
+		((bits & 0x4) << 1) | ((bits & 0x8) >> 1)
+}
+
+// Flip 3x3 bitset
+func flip3(bits uint16) uint16 {
+	return ((bits & 0x001) << 2) | ((bits & 0x002) << 0) | ((bits & 0x004) >> 2) |
+		((bits & 0x008) << 2) | ((bits & 0x010) << 0) | ((bits & 0x020) >> 2) |
+		((bits & 0x040) << 2) | ((bits & 0x080) << 0) | ((bits & 0x100) >> 2)
+}
+
 type RuleBook struct {
 	Rules map[string]Grid
+	// Uint16-based rules for fast lookup
+	Rules2 map[uint16]uint16 // 2x2 -> 3x3
+	Rules3 map[uint16]uint16 // 3x3 -> 4x4
 }
 
 func (rb *RuleBook) AddRule(pattern, replacement Grid) {
@@ -86,6 +191,27 @@ func (rb *RuleBook) AddRule(pattern, replacement Grid) {
 		rb.Rules[current.Flip().String()] = replacement
 		current = current.Rotate()
 	}
+
+	// Also add to uint16 maps
+	size := len(pattern)
+	patternBits := gridToBits(pattern)
+	replacementBits := gridToBits(replacement)
+
+	if size == 2 {
+		curr := patternBits
+		for r := 0; r < 4; r++ {
+			rb.Rules2[curr] = replacementBits
+			rb.Rules2[flip2(curr)] = replacementBits
+			curr = rotate2(curr)
+		}
+	} else if size == 3 {
+		curr := patternBits
+		for r := 0; r < 4; r++ {
+			rb.Rules3[curr] = replacementBits
+			rb.Rules3[flip3(curr)] = replacementBits
+			curr = rotate3(curr)
+		}
+	}
 }
 
 func (rb *RuleBook) Match(pattern Grid) (Grid, bool) {
@@ -93,9 +219,20 @@ func (rb *RuleBook) Match(pattern Grid) (Grid, bool) {
 	return repl, ok
 }
 
+func (rb *RuleBook) matchBits(bits uint16, blockSize int) (uint16, bool) {
+	if blockSize == 2 {
+		repl, ok := rb.Rules2[bits]
+		return repl, ok
+	}
+	repl, ok := rb.Rules3[bits]
+	return repl, ok
+}
+
 func NewDay21(lines []string) (*RuleBook, error) {
 	rb := &RuleBook{
-		Rules: make(map[string]Grid),
+		Rules:  make(map[string]Grid),
+		Rules2: make(map[uint16]uint16),
+		Rules3: make(map[uint16]uint16),
 	}
 	for _, line := range lines {
 		parts := strings.Split(line, " => ")
@@ -176,8 +313,50 @@ func enhance(grid Grid, rb *RuleBook) Grid {
 	return joinGrids(blocks)
 }
 
+func enhance1D(grid Grid1D, rb *RuleBook) Grid1D {
+	size := grid.size
+	var blockSize, newBlockSize int
+	if size%2 == 0 {
+		blockSize = 2
+		newBlockSize = 3
+	} else {
+		blockSize = 3
+		newBlockSize = 4
+	}
+
+	blocksPerSide := size / blockSize
+	newSize := blocksPerSide * newBlockSize
+	newGrid := newGrid1D(newSize)
+
+	for by := 0; by < blocksPerSide; by++ {
+		for bx := 0; bx < blocksPerSide; bx++ {
+			// Extract block as bitset
+			bits := grid.extractBlock(bx*blockSize, by*blockSize, blockSize)
+
+			// Look up replacement
+			if replBits, ok := rb.matchBits(bits, blockSize); ok {
+				// Write replacement to new grid
+				newGrid.writeBlock(bx*newBlockSize, by*newBlockSize, newBlockSize, replBits)
+			}
+		}
+	}
+
+	return newGrid
+}
+
+func gridFrom2D(g Grid) Grid1D {
+	size := len(g)
+	grid := newGrid1D(size)
+	for y := range g {
+		for x := range g[y] {
+			grid.set(x, y, g[y][x])
+		}
+	}
+	return grid
+}
+
 func Day21(rb *RuleBook, part1 bool) uint {
-	grid := parseGrid(".#./..#/###")
+	grid := gridFrom2D(parseGrid(".#./..#/###"))
 
 	iterations := 18
 	if part1 {
@@ -185,8 +364,8 @@ func Day21(rb *RuleBook, part1 bool) uint {
 	}
 
 	for range iterations {
-		grid = enhance(grid, rb)
+		grid = enhance1D(grid, rb)
 	}
 
-	return grid.CountOn()
+	return grid.countOn()
 }

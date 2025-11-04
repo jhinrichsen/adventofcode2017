@@ -37,7 +37,7 @@ func NewDay24(lines []string) (Day24Puzzle, error) {
 
 type bridgeState struct {
 	port     uint
-	used     []bool
+	used     uint64 // Bitset for up to 64 components
 	strength uint
 	length   uint
 }
@@ -48,7 +48,7 @@ func Day24(components Day24Puzzle, part1 bool) uint {
 
 	stack := []bridgeState{{
 		port:     0,
-		used:     make([]bool, len(components)),
+		used:     0,
 		strength: 0,
 		length:   0,
 	}}
@@ -69,7 +69,7 @@ func Day24(components Day24Puzzle, part1 bool) uint {
 		}
 
 		for i, comp := range components {
-			if state.used[i] {
+			if state.used&(1<<i) != 0 {
 				continue
 			}
 
@@ -85,13 +85,9 @@ func Day24(components Day24Puzzle, part1 bool) uint {
 			}
 
 			if canConnect {
-				newUsed := make([]bool, len(components))
-				copy(newUsed, state.used)
-				newUsed[i] = true
-
 				stack = append(stack, bridgeState{
 					port:     nextPort,
-					used:     newUsed,
+					used:     state.used | (1 << i),
 					strength: state.strength + comp.Strength(),
 					length:   state.length + 1,
 				})

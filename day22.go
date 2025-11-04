@@ -131,7 +131,7 @@ func Day22(vc *Day22Puzzle, bursts uint, part1 bool) (uint, error) {
 
 	if part1 {
 		for range bursts {
-			pos := packPos(x, y)
+			pos := int64(x)<<32 | int64(uint32(y))
 			state := states[pos]
 
 			if state == Infected {
@@ -148,7 +148,7 @@ func Day22(vc *Day22Puzzle, bursts uint, part1 bool) (uint, error) {
 		}
 	} else {
 		for range bursts {
-			pos := packPos(x, y)
+			pos := int64(x)<<32 | int64(uint32(y))
 			state := states[pos]
 
 			switch state {

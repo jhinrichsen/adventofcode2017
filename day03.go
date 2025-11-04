@@ -34,12 +34,16 @@ func transform(n int, axisfn func(float64) float64, clockwise bool) int {
 	if n == 1 {
 		return 0
 	}
-	k := delta(n, axisfn)
-	prev := transform(n-1, axisfn, clockwise)
+	result := 0
+	sign := 1
 	if clockwise {
-		return prev - k
+		sign = -1
 	}
-	return prev + k
+	for i := 2; i <= n; i++ {
+		k := delta(i, axisfn)
+		result += sign * k
+	}
+	return result
 }
 
 func tx(n int) int {
@@ -51,17 +55,37 @@ func ty(n int) int {
 }
 
 // Day03Part1 returns the number of steps for a given square.
-// A recursive implementation is used that produces a stack overflow for values
-// around 1e8. The recursive call can be replaced by a loop based impl using
-// delta() only.
+// Uses direct ring calculation - O(1) instead of O(n).
 func Day03Part1(square int) int {
-	x, y := tx(square), ty(square)
-	// Steps are x + y coordinates, ignoring any sign indicating up/down
-	// resp. left/right
-	// theoretically, clockwise spirals and counterclockwise spirals should
-	// produce the same number of steps
-	steps := abs(x) + abs(y)
-	return steps
+	if square == 1 {
+		return 0
+	}
+
+	// Find which ring this number is in
+	// Ring k contains numbers from (2k-1)^2 + 1 to (2k+1)^2
+	// Ring 0: 1, Ring 1: 2-9, Ring 2: 10-25, etc.
+	ring := 0
+	for (2*ring+1)*(2*ring+1) < square {
+		ring++
+	}
+
+	// Maximum number in previous ring
+	prevRingMax := (2*ring - 1) * (2*ring - 1)
+
+	// Position within the current ring (0-indexed)
+	posInRing := square - prevRingMax - 1
+
+	// Each side has 2*ring positions
+	sideSize := 2 * ring
+
+	// Position on current side (0 to sideSize-1)
+	posOnSide := posInRing % sideSize
+
+	// Distance from center of side (center is at position ring-1)
+	distFromCenter := abs(posOnSide - (ring - 1))
+
+	// Manhattan distance is ring distance + distance from side center
+	return ring + distFromCenter
 }
 
 // Day03Part2 returns the first number larger than n of https://oeis.org/A141481.
