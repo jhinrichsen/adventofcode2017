@@ -58,11 +58,21 @@ Number of tries for a correct answer:
 === Benchmark runtime on different machines
 
 This is the sum of all individual benchmarks.
-Use 'make total' to create a unique report in `./benches` folder.
+Use `make total` to create a unique report in `./benches` folder.
+
+On Linux systems, `make total` automatically:
+
+1. Saves the current CPU governor setting
+2. Switches to performance mode for accurate benchmarking
+3. Runs all benchmarks
+4. Restores the original CPU governor setting
+
+This ensures consistent, reproducible benchmark results by preventing CPU frequency scaling from affecting measurements.
 
 |===
 | OS    | Architecture | CPU | Runtime [second]
-| Linux |     Amd64    | AMD Ryzen 7 7840HS w/ Radeon 780M Graphics | 1.3s
+| Linux |     Amd64    | AMD Ryzen 7 7840HS w/ Radeon 780M Graphics | 1.36s
+| Linux |     Amd64    | Intel Core i7-14700K | 1.22s
 |===
 
 == Day 1: Inverse Captcha

@@ -1,5 +1,5 @@
 GO ?= CGO_ENABLED=0 go
-BENCH_FILE ?= benches/$(shell go env GOOS)-$(shell go env GOARCH)-$(shell lscpu | grep "Model name:" | cut -d: -f2 | xargs | sed 's/ \(CPU\|@\|w\/\).*//' | sed 's/ /_/g').txt
+BENCH_FILE ?= benches/$(shell go env GOOS)-$(shell go env GOARCH)-$(shell lscpu | grep "Model name:" | cut -d: -f2 | xargs | sed 's/ \(CPU\|@\|w\/\).*//' | tr -d '()' | sed 's/ /_/g').txt
 
 .PHONY: all
 all: clean lint test
@@ -23,7 +23,27 @@ bench:
 
 $(BENCH_FILE):
 	@echo "Running benchmarks and saving to $@..."
+ifeq ($(shell go env GOOS),linux)
+	@if [ -d /sys/devices/system/cpu/cpu0/cpufreq ]; then \
+		SAVED_GOV=$$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor); \
+		echo "Saving current CPU governor: $$SAVED_GOV"; \
+		echo "Setting CPU governor to performance mode..."; \
+		for cpu in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do \
+			echo performance | sudo tee $$cpu > /dev/null; \
+		done; \
+		$(GO) test -run=^$$ -bench=Day..Part.$$ -benchmem | tee $@; \
+		echo "Restoring CPU governor to $$SAVED_GOV..."; \
+		for cpu in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do \
+			echo $$SAVED_GOV | sudo tee $$cpu > /dev/null; \
+		done; \
+		echo "CPU governor restored to $$SAVED_GOV"; \
+	else \
+		echo "CPU frequency scaling not available, running benchmarks normally..."; \
+		$(GO) test -run=^$$ -bench=Day..Part.$$ -benchmem | tee $@; \
+	fi
+else
 	@$(GO) test -run=^$$ -bench=Day..Part.$$ -benchmem | tee $@
+endif
 
 .PHONY: lint
 lint:
